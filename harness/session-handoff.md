@@ -12,6 +12,11 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 - `feature_list.json`과 `docs/fhe-features.md`의 기능은 검증 전까지 `not_started`다.
 - `./init.sh`는 구현 재개 후 복구할 완료 게이트이며 현재 설계 검증에는 사용하지 않는다.
 - RAG 문서는 이번 정합성 수정 범위에서 제외했다.
+- 2026-07-13 설계 문서 정합화는 커밋 `4da1145d`로 `origin/main`에 반영했다.
+- `mise` 2026.7.5를 사용자 계정에 설치하고 zsh activation과 이 저장소 trust를 설정했다.
+- `mise install`은 사용자 요청으로 중단했다. 이후 상태 기록 전 `mise run pre-commit`이 누락 도구를
+  자동 설치하면서 Rust 1.95.0과 Skaffold 2.20.0 설치가 완료됐다. Zig 0.14.1만 `missing` 상태이며
+  자동 설치는 다시 중단했다. Pre-commit 본 작업은 실행 완료되지 않았다.
 
 ## 확정한 기본 설계
 
@@ -64,11 +69,12 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 
 ## 다음 시작점
 
-1. `docs/fhe-development-plan.md`의 P0부터 새 패키지와 검증 하네스를 만든다.
-2. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
+1. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
+2. `docs/fhe-development-plan.md`의 P0부터 새 패키지와 검증 하네스를 만든다.
+3. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
    policy를 작은 spike로 검증한다.
-3. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
-4. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
+4. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
+5. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
 
 ## 남는 위험과 보안 주장 한계
 

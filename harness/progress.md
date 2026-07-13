@@ -23,14 +23,37 @@
   - Secure Gateway만 사용자 원문을 수신하고, 불확실하거나 실패하면 Agent 호출 전에 중단한다.
   - Hermes Agent 전체와 stateless Agent MCP Bridge를 OpenShell sandbox 안에 둔다.
   - Agent는 opaque, typed, session-bound handle과 허용된 공개 연산만 사용한다.
-  - Privacy Core, Public Compute Worker, Reveal Authority를 서로 다른 권한 채널로 분리한다.
-  - 완성된 secret key와 plaintext 생성 권한은 host-only Reveal Authority에만 둔다.
+  - Privacy Core, Public Compute Worker, Reveal Coordinator, PC/phone partial authority와 Fusion Sink를
+    서로 다른 권한 채널로 분리한다.
+  - FHE secret은 PC와 스마트폰의 2-of-2 share로만 보관하고 완성된 secret key를 만들지 않는다.
+  - plaintext는 두 장치가 참여한 뒤 승인된 PC terminal 또는 phone display Fusion Sink에서만 만든다.
   - reveal은 post-LLM terminal egress에서만 수행하며 Agent/history/tool로 되돌리지 않는다.
-  - CKKS는 근사 수치에만 사용하고 정확한 문자열 secret은 AEAD로 보호한다.
+  - CKKS는 근사 수치, BFV/BGV는 exact integer, Boolean FHE는 exact predicate에 사용한다.
+  - 주민등록번호 같은 exact identifier는 record별 AEAD와 2-of-2 threshold envelope로 보호한다.
+  - 이름은 현재 제품의 PII 탐지·masking 대상에서 제외한다.
+  - 초기 Vault는 메모리 기반이며 후속 영속화 기본안은 SQLite metadata + binary BLOB이다.
   - 초기 입력 범위는 text-only이며 attachment/OCR/audio/memory/tool plaintext는 차단한다.
 - 기능 목록과 개발 계획은 전 항목 `not_started`인 재구축 기준으로 다시 작성했다.
-- draw.io 원본과 SVG를 새 컴포넌트 및 정상 sequence 흐름에 맞췄다.
+- draw.io 원본을 2-of-2 구조에 맞췄고 내용이 오래된 SVG 산출물 3개는 삭제했다.
+- 비개발자도 읽을 수 있도록 `docs/glossary.md`를 추가하고 주요 문서에 쉬운 설명을 넣었다.
+- `docs/pii-detection-catalog.md`에 이름을 제외한 92개 탐지 후보를 정리했다.
+- 문서 변경 30개를 `4da1145d` (`docs(fhe-privacy): revise privacy architecture`)로 커밋해
+  `origin/main`에 푸시했다.
 - 설계 상태이므로 구현 완료나 `./init.sh` 통과를 주장하지 않는다.
+
+## 2026-07-13 개발 환경 상태
+
+- `mise` 2026.7.5를 `~/.local/bin/mise`에 설치했다.
+- `~/.zshrc`에 mise zsh activation을 추가하고 OpenShell `mise.toml`을 trust했다.
+- 전체 15개 도구 설치를 시작했으나 사용자 요청으로 중단했다. 상태 기록 전 실행한
+  `mise run pre-commit`이 누락 도구 설치를 자동으로 재개해 Rust와 Skaffold 설치까지 완료한 뒤
+  다시 중단했다.
+- 설치 완료: Python, Node, uv, kubectl, protoc, Helm, helm-docs, Syft, cargo-about,
+  cargo-zigbuild, sccache, markdownlint-cli2.
+- 추가 설치 완료: Rust 1.95.0, Skaffold 2.20.0.
+- 미설치: Zig 0.14.1.
+- 설치 프로세스가 종료됐음을 확인했다. `mise run pre-commit`의 실제 검사 단계는 완료되지 않았다.
+  재개 시 Zig만 설치한 뒤 `mise doctor`와 pre-commit을 실행한다.
 
 ## 2026-07-13 Pre-LLM ingress 경계 확정
 
