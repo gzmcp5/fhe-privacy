@@ -20,19 +20,34 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 2. Secure Gateway는 원문의 유일한 진입점이다. 검출·암호화·Vault 저장·검증에 실패하거나
    불확실하면 Agent를 호출하지 않는다.
 3. OpenShell 내부 Agent MCP Bridge는 stateless이며 secret key, Vault, plaintext와 reveal 코드를
-   갖지 않는다.
+   갖지 않는다. Bridge와 Hermes는 하나의 비신뢰 sandbox principal이며 Bridge capability의 기밀성은
+   보안 경계가 아니다.
 4. Agent는 opaque, typed, session-bound handle로 허용된 공개 연산만 요청한다.
-5. Gateway host-only, Agent-safe, Reveal Authority 채널을 물리적으로 분리한다. 요청의 `role`
+5. Gateway host-only, Agent-safe, Reveal Coordinator와 PC/phone partial decrypt 채널을 물리적으로
+   분리한다. 요청의 `role`
    문자열은 보안 경계가 아니다.
 6. Public Compute Worker는 secret-free/confidentiality-untrusted 영역이다. 결과 무결성과 provenance는
    Core가 별도로 검증한다.
-7. 완성된 secret key는 host-only Reveal Authority만 로드한다. Reveal 결과는 terminal egress로만
-   사용자에게 전달하며 Agent, LLM, history 또는 tool 결과로 반환하지 않는다.
-8. CKKS는 허용 오차가 명시된 수치 데이터에만 사용한다. 문자열 PII, credential, token 등 정확한
-   복원이 필요한 값은 AEAD로 보호한다.
+7. FHE secret은 PC의 `sk_pc`와 스마트폰의 `sk_phone` share로만 보관한다. 기본 2-of-2 reveal은
+   두 장치가 모두 승인·참여해야 하며 완성된 secret key를 생성하거나 single-key로 fallback하지 않는다.
+8. CKKS는 허용 오차가 명시된 수치 데이터에만 사용한다. BFV/BGV는 exact integer, Boolean FHE는
+   exact predicate에 사용한다. 주민등록번호처럼 계산하지 않는 exact identifier는 record별 AEAD와
+   2-of-2 threshold envelope로 보호한다.
 9. 초기 범위는 trusted text ingress만 지원한다. attachment, OCR, audio, clipboard 자동수집,
    memory import, tool output의 plaintext 유입은 명시적으로 차단한다.
 10. OpenShell은 프로세스·filesystem·network 격리 계층이며 위 데이터 흐름 통제를 대체하지 않는다.
+11. Agent-safe Core는 sandbox 전체가 호출할 수 있는 HTTPS/mTLS endpoint로 제공한다. Host-only Core,
+    Reveal Coordinator와 PC partial authority는 서로 다른 local UDS에만 bind하며 기존 OpenShell
+    relay는 재사용하지 않는다. Phone authority는 장치 인증된 별도 채널만 사용한다.
+12. Secure mode는 connect/SSH, exec, sync, forward와 직접 Agent 입력을 차단한 sealed sandbox만
+    사용한다. Core capability는 sandbox/session/policy revision과 짧은 lease에 바인딩한다.
+13. Exact secret은 record별 임의 DEK로 AEAD 암호화하고 DEK를 PC·스마트폰 2-of-2 envelope로 감싼다.
+    장기 AEAD master key는 두지 않는다. Public Compute Worker는 초기 버전에서 결과 무결성 측면의
+    신뢰된 로컬 프로세스다.
+14. 이름은 이 제품의 PII 탐지·masking 대상에서 제외한다. 상세 탐지 종류와 예외는
+    `docs/pii-detection-catalog.md`를 기준으로 한다.
+15. 초기 Vault는 메모리 기반이다. 영속화 단계에서는 SQLite metadata와 binary BLOB을 기본안으로
+    검증하며 JSON을 Vault 본체로 사용하지 않는다.
 
 ## 기준 문서
 
@@ -41,6 +56,8 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 - 컴포넌트 흐름: `docs/1. architecture-component-flow.drawio`
 - 전체 흐름: `docs/architecture-flow.md`
 - 기능 목록: `docs/fhe-features.md`
+- 용어 설명: `docs/glossary.md`
+- PII 탐지 목록: `docs/pii-detection-catalog.md`
 - 개발 계획: `docs/fhe-development-plan.md`
 - MCP/Adapter 계약: `docs/mcp-tool-contract.md`, `docs/agent-adapter-contract.md`
 - Reveal 정책: `docs/reveal-device-policy.md`, `docs/threshold-fhe-reveal.md`
@@ -48,9 +65,9 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 ## 다음 시작점
 
 1. `docs/fhe-development-plan.md`의 P0부터 새 패키지와 검증 하네스를 만든다.
-2. 실제 구현 전 OpenShell relay/IPC, full-process containment와 deny-by-default network policy를
-   작은 spike로 검증한다.
-3. Gateway/Core/Worker/Reveal Authority의 OS-level process identity와 capability 전달 방식을 정한다.
+2. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
+   policy를 작은 spike로 검증한다.
+3. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
 4. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
 
 ## 남는 위험과 보안 주장 한계

@@ -1,30 +1,35 @@
-# Reveal Authority Policy
+# 2-of-2 Reveal and Device Policy
 
-![Reveal Authority Routing](reveal-device-flow.svg)
+> **쉽게 말하면:** PC와 스마트폰은 열쇠 조각을 하나씩 가진다. 어느 한쪽만으로는 암호를 풀 수
+> 없다. 두 장치가 모두 참여하더라도 평문은 정책이 허용한 PC 화면 또는 스마트폰 화면에만 나타난다.
+> 용어는 [`glossary.md`](glossary.md)를 참고한다.
+
+draw.io 원본: [`reveal-device-flow.drawio`](reveal-device-flow.drawio)
 
 ## 1. 설계 관점
 
 - 목적:
   - 외부 LLM / Agent / tool / provider의 평문 민감값 접근 차단
   - plaintext 생성 권한과 일반 Agent 실행 경로 분리
-  - reveal 위험도 기반 PC / 스마트폰 / threshold FHE 라우팅
+  - 모든 FHE reveal에서 PC와 스마트폰 2-of-2 참여 강제
+  - 위험도 기반 PC fusion / phone fusion 라우팅
 
 - 기본 관점:
   - PC: 기본 UX 장치, 완전 신뢰 장치 아님
-  - 스마트폰: 기본 대화 장치 아님, 고위험 reveal 승인/표시 장치
+  - 스마트폰: 기본 대화 장치 아님, 모든 reveal의 필수 partial authority
   - TEE / TPM: 필수 신뢰 기반 아님, key/share 저장 보호 hardening 옵션
-  - Threshold FHE: 고위험 reveal에서 단일 장치 단독 plaintext 생성 방지
+  - Threshold FHE: 기본 키 모델이며 단일 장치 단독 plaintext 생성 금지
 
 ## 2. 전체 동작 흐름
 
 | 단계 | 위치 | 동작 |
 |---|---|---|
 | 1. 사용자 입력 | PC | Gateway-owned trusted ingress 입력 |
-| 2. 사전 마스킹 | Secure Gateway | 민감값을 marker, vault reference, ciphertext handle로 변환 |
+| 2. 사전 마스킹 | Secure Gateway | 민감값을 marker, FHE ciphertext 또는 threshold-envelope handle로 변환 |
 | 3. 외부 처리 | OpenShell Hermes Agent / LLM | masked text와 opaque handle만 처리 |
 | 4. 응답 수신 | Secure Gateway | reveal marker 또는 ciphertext handle 검사 |
 | 5. Reveal 라우팅 | Reveal Policy | 위험도, 목적지, 세션 상태 기반 reveal 경로 선택 |
-| 6. Reveal 수행 | 선택된 reveal authority | PC local reveal, smartphone approval, threshold PC fusion, threshold phone fusion 중 하나 |
+| 6. Reveal 수행 | PC/phone partial authorities | 두 partial share 생성 후 승인된 fusion sink로 전달 |
 | 7. 결과 표시 | PC 또는 스마트폰 | 선택된 출력 위치에만 plaintext 생성 |
 
 - 흐름의 핵심:
@@ -39,41 +44,31 @@
 | PC UI / Gateway ingress | 사용자 입력과 결과 표시의 기본 UX | 조건부 신뢰 |
 | Secure Gateway | pre-LLM mask, post-LLM local-egress reveal 검사 | 신뢰 경로 |
 | OpenShell Hermes Agent / LLM | masked text 처리와 응답 생성 | 비신뢰 |
-| Agent MCP Bridge | handle-only stdio 요청 중계 | 비신뢰 sandbox 내부 |
+| Agent MCP Bridge | 독자 권한 없는 handle-only stdio 중계 | Hermes와 같은 비신뢰 sandbox principal |
 | Privacy Core / Vault | session, handle, ciphertext 상태 소유 | 신뢰 경로 |
-| Public Compute Plane | ciphertext와 public/eval key 기반 동형 연산 | 무비밀·confidentiality-untrusted; 결과 무결성 별도 검증 |
-| Reveal Policy | reveal 허용, 거부, 승격 결정 | 신뢰 경로 |
-| Local Reveal Authority | 낮은 위험도 reveal의 PC 처리 | 낮은 위험도 신뢰 경로 |
-| Smartphone Approval | 별도 장치 기반 reveal 요청 확인/승인 | 중간 위험도 신뢰 경로 |
-| Threshold Reveal Authority | PC와 스마트폰의 partial decrypt 참여 | 고위험 신뢰 경로 |
+| Public Compute Plane | ciphertext와 public/eval key 기반 동형 연산 | 무비밀·confidentiality-untrusted; v1 결과 무결성 신뢰 |
+| Reveal Coordinator / Policy | reveal 허용, 목적지, nonce와 transcript 결정 | secret share 없는 신뢰 경로 |
+| PC Partial Decrypt Authority | `sk_pc` 또는 exact-envelope PC share | 단독 reveal 불가 |
+| Phone Partial Decrypt Authority | `sk_phone` 또는 exact-envelope phone share | 사용자 승인 후 참여; 단독 reveal 불가 |
+| PC Fusion Sink | 두 partial share 결합과 PC 출력 | PC plaintext를 허용한 요청만 |
+| Phone Fusion Sink | 두 partial share 결합과 phone display | 고위험/phone-only 출력 |
 | TEE / TPM / Secure Enclave / StrongBox | key 또는 secret share 저장 중 보호 강화 | 선택적 hardening |
 
 ## 4. Reveal 모델
 
 | 모델 | 쓰임 | plaintext 위치 |
 |---|---|---|
-| Local Convenience Reveal | 낮은 위험도 값, 빠른 PC 중심 UX | PC |
-| Smartphone Step-up Approval | 별도 장치 확인이 필요한 중간 위험도 reveal | PC |
-| Threshold PC Fusion | PC 출력이 필요한 고위험 reveal | PC |
-| Threshold Phone Fusion | PC에 plaintext를 남기면 안 되는 고보증 reveal | 스마트폰 |
+| 2-of-2 PC Fusion | PC 출력이 허용된 값 | PC |
+| 2-of-2 Phone Fusion | PC에 plaintext를 남기면 안 되는 값 | 스마트폰 |
 
-- Local Convenience Reveal:
-  - PC 내부 reveal 완료
-  - 높은 사용성
-  - PC compromise에 취약
-
-- Smartphone Step-up Approval:
-  - 스마트폰의 승인 장치 역할
-  - 승인 후 PC plaintext 생성 가능
-  - PC 단일키 탈취에 대한 암호학적 방어 아님
-
-- Threshold PC Fusion:
+- 2-of-2 PC Fusion:
   - PC와 스마트폰의 partial decrypt share 생성
+  - 스마트폰의 사용자 승인 필수
   - PC에서 fusion
   - 결과 plaintext의 PC 생성
-  - PC 출력이 필요한 고위험 작업용
+  - PC 출력이 정책상 허용된 작업용
 
-- Threshold Phone Fusion:
+- 2-of-2 Phone Fusion:
   - PC partial decrypt share의 스마트폰 이동
   - 스마트폰에서 fusion
   - 스마트폰 화면에만 plaintext 표시
@@ -85,6 +80,7 @@
   - PC: `sk_pc` secret share
   - 스마트폰: `sk_phone` secret share
   - 공개 material: joint public key, joint evaluation key
+  - 완성된 secret key: 생성·저장·전송 금지
 
 - 암호화와 연산:
   - joint public key 기반 암호화
@@ -99,6 +95,7 @@
 - 중요한 경계:
   - 스마트폰 secret share / wrapping key의 PC 전송 금지
   - 한쪽 secret share만으로 plaintext 복원 불가
+  - 한쪽 장치 장애 시 fail-closed, single-key fallback 금지
   - PC fusion: 최종 plaintext의 PC 생성
   - Phone fusion: 최종 plaintext의 스마트폰 단독 생성
 
@@ -106,10 +103,9 @@
 
 | 상황 | 기본 경로 | 이유 |
 |---|---|---|
-| 낮은 위험도 값 | Local Convenience Reveal | PC 중심 UX 유지 |
-| 별도 확인이 필요한 값 | Smartphone Step-up Approval | 별도 장치 기반 요청 확인 |
-| PC 출력이 필요한 고위험 값 | Threshold PC Fusion | PC 단독 reveal 방지와 PC 결과 사용 병행 |
-| PC에 plaintext를 남기면 안 되는 값 | Threshold Phone Fusion | 최종 plaintext의 스마트폰 단독 표시 |
+| PC 출력이 허용된 값 | 2-of-2 PC Fusion | PC 단독 reveal 방지와 PC 결과 사용 병행 |
+| 주민등록번호·credential 등 고위험 exact secret | 2-of-2 Phone Fusion 또는 deny | PC에 plaintext를 남기지 않음 |
+| PC에 plaintext를 남기면 안 되는 값 | 2-of-2 Phone Fusion | 최종 plaintext의 스마트폰 단독 표시 |
 | 외부 LLM/tool로 평문 반환 | Deny | LLM plaintext zero 원칙과 충돌 |
 
 - 라우팅 기준:
@@ -125,7 +121,7 @@
   - `SecureGateway` pre-LLM masking 경로
   - `SecureGateway` local-egress reveal 검사 경로
   - `Reveal Policy`
-  - 선택된 reveal authority
+  - Reveal Coordinator와 선택된 PC/phone Fusion Sink
 
 - 조건부 신뢰 영역:
   - PC OS, 터미널, GUI, IME
@@ -142,7 +138,7 @@
 
 - 보안 주장 범위:
   - secure gateway 모드: 외부 LLM/Agent/provider로 평문 민감값 미전송
-  - threshold FHE 모드: PC 또는 스마트폰 한쪽 secret share만으로 reveal 불가
+  - 기본 FHE 모드: PC 또는 스마트폰 한쪽 secret share만으로 reveal 불가
   - PC fusion: 최종 plaintext의 PC 생성
   - phone fusion: 최종 plaintext의 PC 반환 없음
 
@@ -151,7 +147,8 @@
 - Secure Gateway 모드:
   - LLM 호출 전 gateway 입력 마스킹
   - OpenShell Hermes Agent의 handle-only stdio MCP Bridge
-  - session-scoped Privacy Core와 분리된 agent-safe channel
+  - session-scoped Privacy Core의 HTTPS/mTLS agent-safe channel
+  - host-only coordinator/PC partial UDS, authenticated phone channel과 sealed OpenShell sandbox
   - LLM 응답 이후 local-egress 정책 경로에서만 reveal 수행
   - FHE-Privacy의 기본 보안 주장 기준
 

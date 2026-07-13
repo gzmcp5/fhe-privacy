@@ -1,5 +1,10 @@
 # 진행 상황
 
+> 아래에는 삭제된 과거 구현과 당시 결정을 기록한 항목도 있다. 현재 설계는
+> `session-handoff.md`와 `docs/1-0. security-architecture-index.md`가 우선한다. 특히 단일 Reveal
+> Authority, 완성 secret key와 선택적 smartphone step-up 기록은 PC·스마트폰 2-of-2 설계로
+> 대체되었다.
+
 ## 현재 상태
 
 - **최종 업데이트:** 2026-07-13
