@@ -1,0 +1,289 @@
+<mxGraphModel dx="1593" dy="947" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="title" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontColor=#0f172a;fontSize=14;fontStyle=1;" value="FHE-Privacy 통합 아키텍처 — 신뢰 존 3 × 문지기 2 (FHE Client · Secure Gateway)" vertex="1">
+      <mxGeometry height="24" width="900" x="30" y="22" as="geometry" />
+    </mxCell>
+    <mxCell id="zone_local" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#94a3b8;fontColor=#475569;fontStyle=1;verticalAlign=top;align=center;spacingLeft=12;spacingTop=8;" value="로컬 신뢰 영역 (secret key 보유)" vertex="1">
+      <mxGeometry height="840" width="650" x="30" y="70" as="geometry" />
+    </mxCell>
+    <mxCell id="zone_public" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#c4b5fd;fontColor=#6d28d9;fontStyle=1;verticalAlign=top;align=center;spacingLeft=12;spacingTop=8;" value="public-context 영역 (secret key 없음 · 암호문 연산)" vertex="1">
+      <mxGeometry height="380" width="420" x="700" y="70" as="geometry" />
+    </mxCell>
+    <mxCell id="zone_external" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#fdba74;dashed=1;fontColor=#9a3412;fontStyle=1;verticalAlign=top;align=center;spacingLeft=12;spacingTop=8;" value="외부 / 비신뢰 영역 (Agent · LLM)" vertex="1">
+      <mxGeometry height="280" width="420" x="700" y="648" as="geometry" />
+    </mxCell>
+    <mxCell id="db_container" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#a78bfa;dashed=1;fontColor=#6d28d9;fontStyle=1;verticalAlign=top;align=left;spacingLeft=10;spacingTop=4;" value="Encrypted DB (secret key 없음)" vertex="1">
+      <mxGeometry height="100" width="380" x="730" y="134" as="geometry" />
+    </mxCell>
+    <mxCell id="docs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#64748b;fontColor=#0f172a;" value="문서 코퍼스" vertex="1">
+      <mxGeometry height="46" width="120" x="55" y="120" as="geometry" />
+    </mxCell>
+    <mxCell id="chunker" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontColor=#0f172a;fontStyle=1;" value="Chunker" vertex="1">
+      <mxGeometry height="46" width="120" x="205" y="120" as="geometry" />
+    </mxCell>
+    <mxCell id="doc_embed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" value="Embedding" vertex="1">
+      <mxGeometry height="46" width="120" x="355" y="120" as="geometry" />
+    </mxCell>
+    <mxCell id="user_input" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#64748b;fontColor=#0f172a;fontStyle=1;" value="User input&lt;br&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;(검색 쿼리)&lt;/font&gt;" vertex="1">
+      <mxGeometry height="54" width="120" x="55" y="198" as="geometry" />
+    </mxCell>
+    <mxCell id="query_embed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" value="Query Embedding" vertex="1">
+      <mxGeometry height="54" width="120" x="205" y="198" as="geometry" />
+    </mxCell>
+    <mxCell id="fhe_client" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#a7f3d0;strokeColor=#047857;strokeWidth=2;fontColor=#064e3b;fontStyle=1;" value="🔑 FHE Client&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;encrypt ↔ decrypt&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;secret key · 평문↔암호문 유일 변환&lt;/font&gt;" vertex="1">
+      <mxGeometry height="92" width="160" x="335" y="270" as="geometry" />
+    </mxCell>
+    <mxCell id="rank" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#16a34a;fontColor=#0f172a;" value="Rank Top-k&lt;br&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;plaintext scores&lt;/font&gt;" vertex="1">
+      <mxGeometry height="56" width="150" x="340" y="432" as="geometry" />
+    </mxCell>
+    <mxCell id="selected_chunks" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#16a34a;fontColor=#0f172a;" value="Selected Chunks&lt;br&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;plaintext&lt;/font&gt;" vertex="1">
+      <mxGeometry height="52" width="150" x="340" y="528" as="geometry" />
+    </mxCell>
+    <mxCell id="prompt_builder" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffedd5;strokeColor=#ea580c;fontColor=#0f172a;fontStyle=1;" value="Prompt Builder" vertex="1">
+      <mxGeometry height="52" width="150" x="340" y="620" as="geometry" />
+    </mxCell>
+    <mxCell id="gateway" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bfdbfe;strokeColor=#1d4ed8;strokeWidth=2;fontColor=#1e3a8a;fontStyle=1;" value="🛡 Secure Gateway&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;mask ↔ reveal&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;로컬↔외부 유일 경계&lt;/font&gt;" vertex="1">
+      <mxGeometry height="92" width="160" x="335" y="710" as="geometry" />
+    </mxCell>
+    <mxCell id="pii" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d1fae5;strokeColor=#059669;fontColor=#0f172a;" value="PII Engine&lt;br&gt;detect / mask" vertex="1">
+      <mxGeometry height="56" width="150" x="55" y="720" as="geometry" />
+    </mxCell>
+    <mxCell id="vault" parent="1" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#d1fae5;strokeColor=#059669;fontColor=#0f172a;" value="Local Vault&lt;br&gt;marker → ciphertext" vertex="1">
+      <mxGeometry height="66" width="150" x="520" y="432" as="geometry" />
+    </mxCell>
+    <mxCell id="user_response" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;fontColor=#0f172a;" value="User response" vertex="1">
+      <mxGeometry height="58" width="150" x="340" y="840" as="geometry" />
+    </mxCell>
+    <mxCell id="chunk_decrypt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#d97706;strokeWidth=2;fontColor=#78350f;fontStyle=1;" value="🔑 Chunk Decrypt&lt;br&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;대칭키 · 텍스트 복호&lt;/font&gt;" vertex="1">
+      <mxGeometry height="60" width="150" x="520" y="524" as="geometry" />
+    </mxCell>
+    <mxCell id="enc_vectordb" parent="1" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f5f3ff;strokeColor=#7c3aed;fontColor=#0f172a;fontSize=10;" value="Encrypted Vector&lt;br&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;id → 암호화 임베딩&lt;/font&gt;" vertex="1">
+      <mxGeometry height="62" width="170" x="742" y="162" as="geometry" />
+    </mxCell>
+    <mxCell id="enc_text" parent="1" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=10;fillColor=#f5f3ff;strokeColor=#7c3aed;fontColor=#0f172a;fontSize=10;" value="Encrypted Text&lt;br&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;id → 암호화 텍스트&lt;/font&gt;" vertex="1">
+      <mxGeometry height="62" width="170" x="928" y="162" as="geometry" />
+    </mxCell>
+    <mxCell id="fhe_public" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#16a34a;strokeWidth=2;fontColor=#0f172a;fontStyle=1;" value="Encrypted Similarity&lt;br&gt;&lt;font style=&quot;font-size: 11px;&quot;&gt;= FHE Ops&lt;/font&gt;&lt;br&gt;&lt;font style=&quot;font-size: 9px;&quot;&gt;public-context engine (동일 엔진)&lt;/font&gt;" vertex="1">
+      <mxGeometry height="92" width="210" x="722" y="250" as="geometry" />
+    </mxCell>
+    <mxCell id="scores" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#7c3aed;fontColor=#0f172a;" value="Encrypted Scores" vertex="1">
+      <mxGeometry height="54" width="180" x="737" y="362" as="geometry" />
+    </mxCell>
+    <mxCell id="agent" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#ea580c;fontColor=#0f172a;fontStyle=1;" value="External Agent" vertex="1">
+      <mxGeometry height="66" width="150" x="735" y="690" as="geometry" />
+    </mxCell>
+    <mxCell id="llm" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#ea580c;fontColor=#0f172a;" value="LLM" vertex="1">
+      <mxGeometry height="66" width="150" x="940" y="690" as="geometry" />
+    </mxCell>
+    <mxCell id="mcp" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#7c3aed;fontColor=#0f172a;fontStyle=1;" value="MCP Server&lt;br&gt;&lt;font style=&quot;font-size: 10px;&quot;&gt;role-scoped tool access layer&lt;/font&gt;" vertex="1">
+      <mxGeometry height="64" width="355" x="735" y="818" as="geometry" />
+    </mxCell>
+    <mxCell id="e1" edge="1" parent="1" source="docs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="chunker" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e2" edge="1" parent="1" source="chunker" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="doc_embed" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e3" edge="1" parent="1" source="user_input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="query_embed" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e4" edge="1" parent="1" source="doc_embed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;entryX=0.5;entryY=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="fhe_client" value="encrypt">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <mxPoint x="380" y="165" as="sourcePoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e5" edge="1" parent="1" source="query_embed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" value="encrypt">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <mxPoint x="370" y="270" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e6" edge="1" parent="1" source="fhe_client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=0.75;exitY=0;entryX=0;entryY=0.5;exitDx=0;exitDy=0;" target="enc_vectordb" value="임베딩 암호화 저장">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <Array as="points">
+          <mxPoint x="455" y="193" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e7" edge="1" parent="1" source="fhe_client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=1.002;exitY=0.177;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.402;entryDx=0;entryDy=0;entryPerimeter=0;" target="fhe_public" value="ciphertext (query)">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <mxPoint x="730" y="287" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e8" edge="1" parent="1" source="enc_vectordb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="fhe_public" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e9" edge="1" parent="1" source="fhe_public" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="scores" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e10" edge="1" parent="1" source="scores" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#059669;fontColor=#047857;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="fhe_client" value="decrypt (sk)">
+      <mxGeometry relative="1" x="0.5664" y="-14" as="geometry">
+        <mxPoint as="offset" />
+        <Array as="points">
+          <mxPoint x="737" y="390" />
+          <mxPoint x="455" y="390" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e11" edge="1" parent="1" source="fhe_client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="rank" value="plaintext scores">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e12" edge="1" parent="1" source="rank" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="chunk_decrypt" value="top-k id">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <Array as="points">
+          <mxPoint x="505" y="460" />
+          <mxPoint x="505" y="510" />
+          <mxPoint x="595" y="510" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e13" edge="1" parent="1" source="selected_chunks" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="prompt_builder" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e14" edge="1" parent="1" source="prompt_builder" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;fontStyle=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="gateway" value="retrieved context → mask">
+      <mxGeometry relative="1" x="-0.0526" y="5" as="geometry">
+        <mxPoint as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e15" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="agent" value="masked text">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-11" as="offset" />
+        <Array as="points">
+          <mxPoint x="496" y="723" />
+        </Array>
+        <mxPoint x="496" y="723" as="sourcePoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e16" edge="1" parent="1" source="agent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=1;exitY=0.4;entryX=0;entryY=0.4;" target="llm" value="masked prompt">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-11" as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e17" edge="1" parent="1" source="llm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#d97706;fontColor=#b45309;exitX=0;exitY=0.7;entryX=1;entryY=0.7;" target="agent" value="tool call / response">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="11" as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e18" edge="1" parent="1" source="agent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.991;entryY=0.317;entryDx=0;entryDy=0;entryPerimeter=0;" target="gateway" value="marker response (egress)">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="11" as="offset" />
+        <mxPoint x="500" y="740" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e19" edge="1" parent="1" source="gateway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="user_response" value="resolved output">
+      <mxGeometry relative="1" x="-0.0526" as="geometry">
+        <mxPoint as="offset" />
+        <Array as="points" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e20" edge="1" parent="1" source="gateway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=0;exitY=0.35;entryX=1;entryY=0.4;" target="pii" value="detect / mask">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e21" edge="1" parent="1" source="pii" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=0.5;exitY=0;entryX=0;entryY=0.55;" target="fhe_client" value="encrypt secrets">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <Array as="points">
+          <mxPoint x="130" y="321" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e22" edge="1" parent="1" source="fhe_client" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=block;startFill=1;endArrow=block;endFill=1;strokeColor=#059669;fontColor=#047857;exitX=1;exitY=0.5;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" target="vault" value="store / read ciphertext">
+      <mxGeometry relative="1" x="-0.3862" y="9" as="geometry">
+        <mxPoint as="offset" />
+        <Array as="points">
+          <mxPoint x="595" y="316" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e23" edge="1" parent="1" source="vault" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#d97706;fontColor=#b45309;exitX=0.75;exitY=0;entryX=0;entryY=0.75;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="fhe_public" value="ciphertext inputs">
+      <mxGeometry relative="1" x="0.525" y="-11" as="geometry">
+        <mxPoint as="offset" />
+        <Array as="points">
+          <mxPoint x="633" y="319" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e24" edge="1" parent="1" source="agent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=block;startFill=1;endArrow=block;endFill=1;strokeColor=#d97706;fontColor=#b45309;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="encrypted tool call / result">
+      <mxGeometry relative="1" x="0.0625" as="geometry">
+        <mxPoint as="offset" />
+        <mxPoint x="810" y="820" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e25" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=block;startFill=1;endArrow=block;endFill=1;strokeColor=#d97706;fontColor=#b45309;entryX=1;entryY=0.5;" target="fhe_public" value="homomorphic ops / result">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <Array as="points">
+          <mxPoint x="1110" y="850" />
+          <mxPoint x="1110" y="296" />
+        </Array>
+        <mxPoint x="1090" y="850" as="sourcePoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e26" edge="1" parent="1" source="chunk_decrypt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=0;exitY=0.5;entryX=1;entryY=0.5;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="selected_chunks" value="">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <Array as="points">
+          <mxPoint x="510" y="554" />
+          <mxPoint x="510" y="554" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e27" edge="1" parent="1" source="chunk_decrypt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=block;startFill=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=1;exitY=0.5;entryX=0.5;entryY=1;exitDx=0;exitDy=0;" target="enc_text" value="fetch id / encrypted text">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <Array as="points">
+          <mxPoint x="1013" y="554" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e28" edge="1" parent="1" source="chunker" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=0.5;exitY=0;entryX=0.5;entryY=0;exitDx=0;exitDy=0;" target="enc_text" value="청크 텍스트 암호화 저장 (대칭키)">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="-12" as="offset" />
+        <Array as="points">
+          <mxPoint x="265" y="110" />
+          <mxPoint x="1013" y="110" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="lg1_sw" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#334155;strokeColor=none;" value="" vertex="1">
+      <mxGeometry height="6" width="26" x="40" y="936" as="geometry" />
+    </mxCell>
+    <mxCell id="lg1_tx" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontColor=#334155;fontSize=11;fontStyle=1;" value="평문 RAG 흐름" vertex="1">
+      <mxGeometry height="20" width="150" x="74" y="929" as="geometry" />
+    </mxCell>
+    <mxCell id="lg2_sw" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#7c3aed;strokeColor=none;" value="" vertex="1">
+      <mxGeometry height="6" width="26" x="230" y="936" as="geometry" />
+    </mxCell>
+    <mxCell id="lg2_tx" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontColor=#6d28d9;fontSize=11;fontStyle=1;" value="암호문 (ciphertext)" vertex="1">
+      <mxGeometry height="20" width="160" x="264" y="929" as="geometry" />
+    </mxCell>
+    <mxCell id="lg3_sw" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#16a34a;strokeColor=none;" value="" vertex="1">
+      <mxGeometry height="6" width="26" x="440" y="936" as="geometry" />
+    </mxCell>
+    <mxCell id="lg3_tx" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontColor=#15803d;fontSize=11;fontStyle=1;" value="복호 · reveal · egress" vertex="1">
+      <mxGeometry height="20" width="180" x="474" y="929" as="geometry" />
+    </mxCell>
+    <mxCell id="lg4_sw" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#2563eb;strokeColor=none;" value="" vertex="1">
+      <mxGeometry height="6" width="26" x="670" y="936" as="geometry" />
+    </mxCell>
+    <mxCell id="lg4_tx" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontColor=#1d4ed8;fontSize=11;fontStyle=1;" value="마스킹 (pre-LLM)" vertex="1">
+      <mxGeometry height="20" width="150" x="704" y="929" as="geometry" />
+    </mxCell>
+    <mxCell id="lg5_sw" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d97706;strokeColor=none;" value="" vertex="1">
+      <mxGeometry height="6" width="26" x="860" y="936" as="geometry" />
+    </mxCell>
+    <mxCell id="lg5_tx" parent="1" style="text;html=1;align=left;verticalAlign=middle;fontColor=#b45309;fontSize=11;fontStyle=1;" value="tool calling · 동형 연산" vertex="1">
+      <mxGeometry height="20" width="200" x="894" y="929" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

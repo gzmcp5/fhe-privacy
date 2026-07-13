@@ -1,0 +1,129 @@
+<mxGraphModel dx="1251" dy="744" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="760" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="plaintext_lane" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#cbd5e1;fontColor=#334155;fontStyle=1;verticalAlign=top;align=center;spacingLeft=12;spacingTop=8;" value="평문 구간" vertex="1">
+      <mxGeometry height="680" width="390" x="30" y="40" as="geometry" />
+    </mxCell>
+    <mxCell id="encrypted_lane" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#ddd6fe;fontColor=#5b21b6;fontStyle=1;verticalAlign=top;align=center;spacingLeft=12;spacingTop=8;" value="암호문 구간" vertex="1">
+      <mxGeometry height="680" width="470" x="450" y="40" as="geometry" />
+    </mxCell>
+    <mxCell id="generation_lane" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#fed7aa;fontColor=#9a3412;fontStyle=1;verticalAlign=top;align=center;spacingLeft=12;spacingTop=8;" value="생성" vertex="1">
+      <mxGeometry height="470" width="300" x="950" y="250" as="geometry" />
+    </mxCell>
+    <mxCell id="docs" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#64748b;fontColor=#0f172a;" value="문서 코퍼스" vertex="1">
+      <mxGeometry height="58" width="130" x="70" y="105" as="geometry" />
+    </mxCell>
+    <mxCell id="0SAtssKu53GXMmud9YDW-1" edge="1" parent="1" source="chunker" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ltlNhokRW15YJBFg82LX-1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="chunker" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontColor=#0f172a;fontStyle=1;" value="Chunker" vertex="1">
+      <mxGeometry height="78" width="130" x="250" y="95" as="geometry" />
+    </mxCell>
+    <mxCell id="doc_embed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" value="Embedding" vertex="1">
+      <mxGeometry height="70" width="130" x="250" y="210" as="geometry" />
+    </mxCell>
+    <mxCell id="doc_encrypt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecfdf5;strokeColor=#059669;fontColor=#0f172a;fontStyle=1;" value="FHE Encrypt&lt;br&gt;&lt;div&gt;(Embedding Vector&lt;/div&gt;&lt;div&gt;/ Chunk)&lt;/div&gt;" vertex="1">
+      <mxGeometry height="78" width="140" x="500" y="206" as="geometry" />
+    </mxCell>
+    <mxCell id="enc_vectordb" parent="1" style="shape=cylinder3d;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f5f3ff;strokeColor=#7c3aed;fontColor=#0f172a;" value="Encrypted DB" vertex="1">
+      <mxGeometry height="110" width="160" x="710" y="190" as="geometry" />
+    </mxCell>
+    <mxCell id="query" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#64748b;fontColor=#0f172a;fontStyle=1;" value="사용자 쿼리" vertex="1">
+      <mxGeometry height="58" width="130" x="70" y="356" as="geometry" />
+    </mxCell>
+    <mxCell id="query_embed" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0284c7;fontColor=#0f172a;" value="Query Embedding" vertex="1">
+      <mxGeometry height="78" width="130" x="250" y="346" as="geometry" />
+    </mxCell>
+    <mxCell id="query_encrypt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecfdf5;strokeColor=#059669;fontColor=#0f172a;fontStyle=1;" value="FHE Encrypt" vertex="1">
+      <mxGeometry height="78" width="140" x="500" y="346" as="geometry" />
+    </mxCell>
+    <mxCell id="encrypted_similarity" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#16a34a;fontColor=#0f172a;fontStyle=1;" value="Encrypted Similarity" vertex="1">
+      <mxGeometry height="96" width="160" x="710" y="337" as="geometry" />
+    </mxCell>
+    <mxCell id="scores" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#7c3aed;fontColor=#0f172a;" value="Encrypted Scores" vertex="1">
+      <mxGeometry height="70" width="160" x="710" y="476" as="geometry" />
+    </mxCell>
+    <mxCell id="decrypt_rank" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecfdf5;strokeColor=#059669;fontColor=#0f172a;fontStyle=1;" value="Decrypt + Rank" vertex="1">
+      <mxGeometry height="78" width="140" x="720" y="580" as="geometry" />
+    </mxCell>
+    <mxCell id="selected_chunks" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#16a34a;fontColor=#0f172a;" value="Selected Chunks" vertex="1">
+      <mxGeometry height="76" width="160" x="970" y="330" as="geometry" />
+    </mxCell>
+    <mxCell id="prompt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffedd5;strokeColor=#ea580c;fontColor=#0f172a;fontStyle=1;" value="Prompt Builder" vertex="1">
+      <mxGeometry height="76" width="160" x="970" y="455" as="geometry" />
+    </mxCell>
+    <mxCell id="llm" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffedd5;strokeColor=#ea580c;fontColor=#0f172a;" value="LLM" vertex="1">
+      <mxGeometry height="70" width="160" x="970" y="580" as="geometry" />
+    </mxCell>
+    <mxCell id="e1" edge="1" parent="1" source="docs" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="chunker" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e2" edge="1" parent="1" source="chunker" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="doc_embed" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e3" edge="1" parent="1" source="doc_embed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="doc_encrypt" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e4" edge="1" parent="1" source="doc_encrypt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="enc_vectordb" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e5" edge="1" parent="1" source="query" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="query_embed" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e6" edge="1" parent="1" source="query_embed" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#334155;fontColor=#334155;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="query_encrypt" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e7" edge="1" parent="1" source="query_encrypt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" target="encrypted_similarity" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e8" edge="1" parent="1" source="enc_vectordb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="encrypted_similarity" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e9" edge="1" parent="1" source="encrypted_similarity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#7c3aed;fontColor=#5b21b6;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="scores" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e10" edge="1" parent="1" source="scores" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#059669;fontColor=#047857;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="decrypt_rank" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e11" edge="1" parent="1" source="decrypt_rank" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#059669;fontColor=#047857;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitDx=0;exitDy=0;" target="selected_chunks" value="">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="930" y="610" />
+          <mxPoint x="930" y="368" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e12" edge="1" parent="1" source="selected_chunks" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#ea580c;fontColor=#9a3412;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="prompt" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e13" edge="1" parent="1" source="prompt" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#ea580c;fontColor=#9a3412;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" target="llm" value="">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="Xv12mhm-N8V5LcuseCyM-1" edge="1" parent="1" source="enc_vectordb" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#059669;fontColor=#047857;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="selected_chunks" value="">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1050" y="245" />
+        </Array>
+        <mxPoint x="940" y="711" as="sourcePoint" />
+        <mxPoint x="1050" y="460" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="Xv12mhm-N8V5LcuseCyM-2" edge="1" parent="1" source="query" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#059669;fontColor=#047857;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="selected_chunks" value="">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="135" y="310" />
+          <mxPoint x="1010" y="310" />
+        </Array>
+        <mxPoint x="920" y="791" as="sourcePoint" />
+        <mxPoint x="1030" y="540" as="targetPoint" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="ltlNhokRW15YJBFg82LX-2" edge="1" parent="1" source="ltlNhokRW15YJBFg82LX-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="enc_vectordb">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="ltlNhokRW15YJBFg82LX-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecfdf5;strokeColor=#059669;fontColor=#0f172a;fontStyle=1;" value="Symmetic Key Encrypt" vertex="1">
+      <mxGeometry height="78" width="140" x="500" y="95" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

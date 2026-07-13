@@ -1,0 +1,84 @@
+{
+  "project": "FHE-Privacy",
+  "description": "비신뢰 외부 AI 에이전트용 로컬 개인정보 보호 시스템",
+  "rules": {
+    "states": ["not_started", "active", "blocked", "passing"],
+    "wip_limit": 1,
+    "passing_rule": "명시된 verification이 성공한 경우에만 passing",
+    "verify_all": "./init.sh"
+  },
+  "features": [
+    {
+      "id": "ARC-01",
+      "group": "아키텍처 경계",
+      "behavior": "Secure Gateway만 raw input을 받고 Hermes Agent 전체는 OpenShell 안에서 실행된다",
+      "verification": "Gateway canary E2E + OpenShell filesystem/network/channel negative tests",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
+      "id": "ARC-02",
+      "group": "아키텍처 경계",
+      "behavior": "Gateway, Agent-safe Core, Public Compute, Reveal Authority가 별도 권한 채널을 사용한다",
+      "verification": "cross-channel 권한 상승과 host-only/reveal 접근 거부 테스트",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
+      "id": "PII-01",
+      "group": "PII ingress",
+      "behavior": "지원 UTF-8 텍스트를 검출·마스킹하고 실패 또는 ambiguity에서 Agent 호출 전에 중단한다",
+      "verification": "PII positive/negative/Unicode/ambiguity + Agent call count 0 tests",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
+      "id": "VLT-01",
+      "group": "Vault와 handle",
+      "behavior": "typed opaque handle이 session, context, provenance, TTL과 operation policy에 결합된다",
+      "verification": "cross-session/replay/expired/context mismatch 거부 테스트",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
+      "id": "CRY-01",
+      "group": "암호 계층",
+      "behavior": "CKKS 근사 수치와 AEAD exact secret을 분리하고 공개 연산기에 secret key를 두지 않는다",
+      "verification": "precision matrix + AEAD tamper + public bundle secret absence tests",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
+      "id": "MCP-01",
+      "group": "MCP와 Core",
+      "behavior": "OpenShell 내부 stateless stdio Bridge가 handle-only 공개 연산을 session Core로 중계한다",
+      "verification": "stdio round-trip + forbidden tools absence + raw plaintext/ciphertext 거부 테스트",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
+      "id": "REV-01",
+      "group": "Reveal과 egress",
+      "behavior": "정책 승인 reveal은 terminal local egress에서만 평문을 만들고 Agent/history로 반환하지 않는다",
+      "verification": "forged/input/unknown handle 거부 + terminal-only plaintext E2E tests",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
+      "id": "ADP-01",
+      "group": "Adapter와 배포",
+      "behavior": "Hermes adapter doctor가 Gateway ingress/egress, OpenShell full-process, Core relay 강제 여부를 판정한다",
+      "verification": "capability별 fail-closed doctor + bypass regression tests",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
+      "id": "OPS-01",
+      "group": "운영 보안",
+      "behavior": "로그 redaction, resource quota, 공급망 검증과 crash fail-closed 정책을 강제한다",
+      "verification": "canary log scan + quota/timeout/crash + artifact secret scan tests",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    }
+  ]
+}
