@@ -84,31 +84,34 @@
         <mxPoint y="11" as="offset" />
       </mxGeometry>
     </mxCell>
-    <mxCell id="e_gw_mcp_mask" edge="1" parent="1" source="gateway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=0.2;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="pii" value="host-only mask (pre-LLM)">
+    <mxCell id="e_gw_mcp_mask" edge="1" parent="1" source="gateway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="pii" value="host-only mask (pre-LLM)">
       <mxGeometry relative="1" as="geometry">
-        <mxPoint x="-90" as="offset" />
+        <mxPoint x="26" y="-12" as="offset" />
       </mxGeometry>
     </mxCell>
-    <mxCell id="e_mcp_gw_masked" edge="1" parent="1" source="pii" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.356;entryY=1;entryDx=0;entryDy=0;" target="gateway" value="masked envelope">
+    <mxCell id="e_mcp_gw_masked" edge="1" parent="1" source="pii" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.72;entryY=1;entryDx=0;entryDy=0;" target="gateway" value="masked envelope">
       <mxGeometry relative="1" as="geometry">
-        <mxPoint x="96" as="offset" />
+        <mxPoint x="126" as="offset" />
       </mxGeometry>
     </mxCell>
-    <mxCell id="e_gw_mcp_reveal" edge="1" parent="1" source="gateway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=0.644;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.35;entryDx=0;entryDy=0;" target="reveal_authority" value="approved reveal request">
+    <mxCell id="e_gw_mcp_reveal" edge="1" parent="1" source="gateway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=0.05;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.8;entryDx=0;entryDy=0;" target="reveal_authority" value="approved reveal request">
       <mxGeometry relative="1" as="geometry">
-        <mxPoint x="42" as="offset" />
+        <mxPoint x="-96" as="offset" />
         <Array as="points">
-          <mxPoint x="620" y="130" />
-          <mxPoint x="620" y="661" />
+          <mxPoint x="315" y="120" />
+          <mxPoint x="315" y="720" />
+          <mxPoint x="660" y="720" />
+          <mxPoint x="660" y="688" />
         </Array>
       </mxGeometry>
     </mxCell>
-    <mxCell id="e_mcp_gw_revealed" edge="1" parent="1" source="fusion_sink" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=0;exitY=0.65;exitDx=0;exitDy=0;entryX=0.8;entryY=1;entryDx=0;entryDy=0;" target="gateway" value="resolved plaintext (approved sink only)">
+    <mxCell id="e_mcp_gw_revealed" edge="1" parent="1" source="fusion_sink" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.95;entryY=1;entryDx=0;entryDy=0;" target="gateway" value="resolved plaintext (approved sink only)">
       <mxGeometry relative="1" as="geometry">
-        <mxPoint x="-40" as="offset" />
+        <mxPoint x="-112" y="48" as="offset" />
         <Array as="points">
-          <mxPoint x="600" y="679" />
-          <mxPoint x="600" y="140" />
+          <mxPoint x="1055" y="815" />
+          <mxPoint x="560" y="815" />
+          <mxPoint x="560" y="120" />
         </Array>
       </mxGeometry>
     </mxCell>
@@ -122,17 +125,27 @@
         <mxPoint x="-44" as="offset" />
       </mxGeometry>
     </mxCell>
-    <mxCell id="e_vault_client" edge="1" parent="1" source="vault" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="reveal_authority" value="approved ciphertext">
+    <mxCell id="e_vault_client" edge="1" parent="1" source="vault" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;dashed=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=1;exitY=0.35;exitDx=0;exitDy=0;entryX=0;entryY=0.45;entryDx=0;entryDy=0;" target="reveal_authority" value="approved ciphertext">
       <mxGeometry relative="1" as="geometry" />
     </mxCell>
-    <mxCell id="e_coordinator_pc" edge="1" parent="1" source="reveal_authority" target="pc_partial_authority" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;" value="bound request">
-      <mxGeometry relative="1" as="geometry" />
+    <mxCell id="e_coordinator_pc" edge="1" parent="1" source="reveal_authority" target="pc_partial_authority" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=0.55;exitY=1;exitDx=0;exitDy=0;entryX=0.55;entryY=0;entryDx=0;entryDy=0;" value="bound request">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="-28" as="offset" />
+      </mxGeometry>
     </mxCell>
-    <mxCell id="e_coordinator_phone" edge="1" parent="1" source="reveal_authority" target="phone_partial_authority" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;" value="bound request + user approval">
-      <mxGeometry relative="1" as="geometry" />
+    <mxCell id="e_coordinator_phone" edge="1" parent="1" source="reveal_authority" target="phone_partial_authority" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.85;entryDx=0;entryDy=0;" value="bound approval request">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint x="-70" y="18" as="offset" />
+      </mxGeometry>
     </mxCell>
-    <mxCell id="e_pc_fusion" edge="1" parent="1" source="pc_partial_authority" target="fusion_sink" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;" value="PC partial">
-      <mxGeometry relative="1" as="geometry" />
+    <mxCell id="e_pc_fusion" edge="1" parent="1" source="pc_partial_authority" target="fusion_sink" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#2563eb;fontColor=#1d4ed8;exitX=1;exitY=0.55;exitDx=0;exitDy=0;entryX=0;entryY=0.55;entryDx=0;entryDy=0;" value="PC partial">
+      <mxGeometry relative="1" as="geometry">
+        <mxPoint y="14" as="offset" />
+        <Array as="points">
+          <mxPoint x="900" y="767" />
+          <mxPoint x="900" y="739" />
+        </Array>
+      </mxGeometry>
     </mxCell>
     <mxCell id="e_phone_fusion" edge="1" parent="1" source="phone_partial_authority" target="fusion_sink" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#16a34a;fontColor=#15803d;" value="phone partial">
       <mxGeometry relative="1" as="geometry" />
@@ -157,12 +170,12 @@
         <mxPoint x="54" as="offset" />
       </mxGeometry>
     </mxCell>
-    <mxCell id="e_vault_ops" edge="1" parent="1" source="vault" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#d97706;fontColor=#b45309;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="fhe_ops" value="ciphertext inputs">
+    <mxCell id="e_vault_ops" edge="1" parent="1" source="vault" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#d97706;fontColor=#b45309;exitX=1;exitY=0.85;exitDx=0;exitDy=0;entryX=0;entryY=0.85;entryDx=0;entryDy=0;" target="fhe_ops" value="ciphertext inputs">
       <mxGeometry relative="1" as="geometry">
-        <mxPoint y="-14" as="offset" />
+        <mxPoint y="18" as="offset" />
         <Array as="points">
-          <mxPoint x="640" y="675" />
-          <mxPoint x="640" y="405" />
+          <mxPoint x="620" y="700" />
+          <mxPoint x="620" y="425" />
         </Array>
       </mxGeometry>
     </mxCell>
