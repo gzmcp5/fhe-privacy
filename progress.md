@@ -7,13 +7,40 @@
 
 ## 현재 상태
 
-- **최종 업데이트:** 2026-07-13
+- **최종 업데이트:** 2026-07-14
 - **테스트:** 현재 제품 코드(`fhe/`), 테스트(`tests/`), 제품 스크립트(`scripts/`)를 제거한 상태라 `./init.sh` 검증 기준은 더 이상 통과하지 않는다.
-- **상태:** 재개발을 위해 제품 코드를 제거하고 하네스/문서만 남긴 초기화 상태.
+- **상태:** 독립 FHE-Privacy 제품 저장소로 분리 완료. 제품 코드는 없고 루트 harness와 설계 문서,
+  OpenShell/Hermes/deploy scaffolding만 있는 구현 전 상태.
 - **명칭:** 시스템 대표 명칭 = **FHE-Privacy 프라이버시 게이트웨이** (Python 패키지로 배포).
 - **범위:** 외부 에이전트용 로컬 프라이버시 게이트웨이(MCP/secure gateway) 시스템.
 - **비범위:** 웹서버, 채팅 UI, 자체 LLM provider loop, DB viewer, web_search.
 - **다음 시작점:** 확정 설계의 구현 가능성 spike와 P0 문서/검증 하네스 재구축.
+
+## 2026-07-14 독립 제품 저장소 전환 및 세션 종료
+
+- OpenShell fork 내부의 `fhe-privacy/` 설계 snapshot을 `git subtree split`로 독립 저장소에 분리해
+  기존 설계 커밋 3개의 이력을 보존했다.
+- 독립 저장소 위치를 `/home/gildellmint/Workspace/AGENTS/FHE-Privacy`로 정하고
+  `https://github.com/gzmcp5/fhe-privacy.git`의 `main`을 새 이력으로 초기화했다.
+- FHE-Privacy를 최상위 제품, OpenShell을 pinned sandbox runtime dependency, Hermes를 OpenShell이
+  실행하는 workload image로 확정했다.
+- `adapters/openshell/`, `images/hermes/`, `deploy/`, `versions.lock`를 추가해 source/build/deploy
+  소유 경계를 표시했다. 현재는 문서 scaffolding이며 구현이나 검증 완료를 뜻하지 않는다.
+- Agent harness 파일을 루트로 이동했다. 현재 시작 파일은 `AGENTS.md`, `CLAUDE.md`,
+  `feature_list.json`, `progress.md`, `session-handoff.md`이며 `harness/` directory는 없다.
+- OpenShell fork의 `main`은 FHE-Privacy snapshot 복사 전 `94cdd697`로 되돌려 원격에도
+  force-with-lease로 반영했다. FHE-Privacy 전용 구현은 OpenShell 저장소에 남아 있지 않다.
+- 확정된 배포 원칙:
+  - 사용자는 FHE-Privacy만 설치하고 실행한다.
+  - 로컬 설치는 검증된 OpenShell host binary/package를 내부 dependency로 설치한다.
+  - Kubernetes는 OpenShell Gateway/Supervisor와 FHE-Privacy component를 별도 workload로 배포한다.
+  - Secure Gateway와 OpenShell Gateway는 하나의 제품 경험을 제공하지만 별도 프로세스와 권한을 유지한다.
+  - 필요한 OpenShell 변경은 범용 sealed sandbox capability로 제한하고, 미반영 기간에는 fork commit과
+    release artifact checksum/digest를 FHE-Privacy가 고정한다.
+- 이번 세션에서는 제품 코드를 구현하지 않았고 `feature_list.json`의 모든 기능은 `not_started`다.
+- 검증 결과: `feature_list.json` JSON, `versions.lock` TOML, draw.io XML과 핵심 문서 링크가 유효하다.
+  기존 RAG 문서의 누락 SVG 링크 두 개는 RAG 비범위의 선행 문제로 남아 있다.
+- 다음 세션은 P0 package/test/CLI skeleton과 `init.sh` 복구에서 시작한다.
 
 ## 2026-07-13 보안 아키텍처 전체 기준 정리
 

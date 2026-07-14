@@ -7,11 +7,13 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 
 ## 저장소 상태
 
+- 로컬 경로는 `/home/gildellmint/Workspace/AGENTS/FHE-Privacy`이고 원격은
+  `https://github.com/gzmcp5/fhe-privacy.git`이다. `main`은 `origin/main`을 추적한다.
 - FHE-Privacy는 2026-07-14 OpenShell fork의 하위 snapshot에서 독립 최상위 제품 저장소로 분리됐다.
   OpenShell은 `versions.lock`로 고정하는 외부 sandbox runtime dependency이며 FHE-Privacy 구현을
   소유하지 않는다.
-- 새 저장소는 기존 `fhe-privacy/` 경로의 3개 커밋 이력을 `git subtree split`로 보존했다. 아직
-  원격 저장소는 설정하지 않았다.
+- 새 저장소는 기존 `fhe-privacy/` 경로의 3개 커밋 이력을 `git subtree split`로 보존했다. 기존
+  FHE-Privacy 원격 `main`은 이 이력과 새 제품 구조로 초기화했다.
 - `adapters/openshell/`, `images/hermes/`, `deploy/`는 제품 경계를 표시하는 초기 scaffolding이며
   구현 완료 근거가 아니다.
 - Agent 지침과 상태 파일은 저장소 루트의 `AGENTS.md`, `CLAUDE.md`, `feature_list.json`,
@@ -21,7 +23,10 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 - `feature_list.json`과 `docs/fhe-features.md`의 기능은 검증 전까지 `not_started`다.
 - `./init.sh`는 구현 재개 후 복구할 완료 게이트이며 현재 설계 검증에는 사용하지 않는다.
 - RAG 문서는 이번 정합성 수정 범위에서 제외했다.
-- 2026-07-13 설계 문서 정합화는 커밋 `4da1145d`로 `origin/main`에 반영했다.
+- 저장소 구조 전환 기준 커밋은 `6e4f1c6f` (`chore(harness): move agent state files to root`)와
+  `c00ad1f6` (`chore(repo): establish FHE-Privacy product repository`)다.
+- OpenShell fork `https://github.com/gzmcp5/OpenShell.git`의 `main`은 FHE-Privacy snapshot을 복사하기
+  직전 커밋 `94cdd697`로 force-with-lease 복구했다. OpenShell 저장소에는 FHE-Privacy 제품 파일이 없다.
 - `mise` 2026.7.5를 사용자 계정에 설치하고 zsh activation과 이 저장소 trust를 설정했다.
 - `mise install`은 사용자 요청으로 중단했다. 이후 상태 기록 전 `mise run pre-commit`이 누락 도구를
   자동 설치하면서 Rust 1.95.0과 Skaffold 2.20.0 설치가 완료됐다. Zig 0.14.1만 `missing` 상태이며
@@ -62,6 +67,21 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
     `docs/pii-detection-catalog.md`를 기준으로 한다.
 15. 초기 Vault는 메모리 기반이다. 영속화 단계에서는 SQLite metadata와 binary BLOB을 기본안으로
     검증하며 JSON을 Vault 본체로 사용하지 않는다.
+16. FHE-Privacy가 최상위 제품과 사용자 진입점이다. 제품 관계는
+    `사용자 -> FHE-Privacy -> OpenShell -> Hermes`다.
+17. Secure Gateway는 OpenShell을 제품/워크플로 수준에서 감싸고 오케스트레이션하지만 OpenShell
+    Gateway와 같은 프로세스나 권한 영역으로 합치지 않는다.
+18. 로컬 배포에서 FHE-Privacy installer는 검증된 고정 버전의 OpenShell host package/binary를
+    설치한다. Kubernetes에서는 별도 OpenShell Gateway/Supervisor image와 Helm chart를 배포한다.
+19. Hermes는 OpenShell이 실행하는 OCI workload image다. Secure Gateway, Privacy Core, OpenShell
+    Gateway와 Hermes sandbox를 하나의 container image에 합치지 않는다.
+20. FHE-Privacy secure session의 사용자 진입점은 `fhe-privacy` CLI다. OpenShell CLI 전체를
+    복제하지 않지만 sealed sandbox에 대한 direct connect/exec/sync/forward는 차단한다.
+21. OpenShell 수정이 필요하면 sealed management access, workload identity, policy revision/lease
+    binding 같은 범용 기능만 OpenShell fork/upstream에 구현한다. PII, Vault, FHE와 reveal 코드는
+    FHE-Privacy에 둔다.
+22. 수정된 OpenShell이 upstream release에 없다면 FHE-Privacy release CI가 고정 commit에서 미리
+    빌드하고 checksum/digest를 기록한다. 최종 사용자는 OpenShell 소스를 빌드하지 않는다.
 
 ## 기준 문서
 
@@ -78,13 +98,16 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 
 ## 다음 시작점
 
-1. 독립 FHE-Privacy 원격 저장소를 생성한 뒤 이 저장소의 `origin`을 설정한다.
-2. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
-3. `docs/fhe-development-plan.md`의 P0부터 새 패키지와 검증 하네스를 만든다.
-4. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
+1. 새 세션 시작 시 `AGENTS.md`, 이 파일, `feature_list.json`, `progress.md`,
+   `docs/1-0. security-architecture-index.md`, `docs/architecture-flow.md`를 순서대로 읽는다.
+2. `git status --short --branch`로 `main...origin/main` clean 상태를 확인한다.
+3. `docs/fhe-development-plan.md`의 P0부터 새 Python package/test/CLI skeleton과 `init.sh` 검증
+   entrypoint를 복구한다. 첫 active feature는 하나만 선택한다.
+4. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
+5. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
    policy를 작은 spike로 검증한다.
-5. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
-6. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
+6. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
+7. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
 
 ## 남는 위험과 보안 주장 한계
 
