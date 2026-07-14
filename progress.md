@@ -112,9 +112,9 @@
 - 후속 시각 검토에서 중앙 통로의 화살표가 교차할 수 있어 Gateway/Hermes와 Core/Bridge를 같은 행에
   재배치했다. orchestration, masked input, unresolved response, handle-only MCP가 서로 다른 수평 lane을
   사용하고 Hermes→Bridge만 sandbox 내부 수직 lane을 사용하도록 모든 waypoint를 제거했다.
-- `docs/0. product-runtime-relationship.md`를 추가해 다이어그램의 제품 소유 관계, 구성요소 책임,
-  화살표별 데이터 계약, 정상 실행 흐름, 금지 경로, 설치/배포 관계와 현재 미구현 상태를 설명했다.
-  README와 배포 문서는 설명 문서를 우선 진입점으로, draw.io를 편집 원본으로 연결한다.
+- `docs/0. product-runtime-relationship.md`를 개조식 핵심 문서로 추가해 제품 소유 관계, 구성요소,
+  신뢰 경계, 데이터 경로, 정상 흐름, 금지 경로, 실패 처리와 현재 상태를 요약했다. README와 배포
+  문서는 설명 문서를 우선 진입점으로, draw.io를 편집 원본으로 연결한다.
 
 ## 2026-07-14 clone 후 native runtime 재현 경로
 
