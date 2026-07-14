@@ -7,6 +7,13 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 
 ## 저장소 상태
 
+- FHE-Privacy는 2026-07-14 OpenShell fork의 하위 snapshot에서 독립 최상위 제품 저장소로 분리됐다.
+  OpenShell은 `versions.lock`로 고정하는 외부 sandbox runtime dependency이며 FHE-Privacy 구현을
+  소유하지 않는다.
+- 새 저장소는 기존 `fhe-privacy/` 경로의 3개 커밋 이력을 `git subtree split`로 보존했다. 아직
+  원격 저장소는 설정하지 않았다.
+- `adapters/openshell/`, `images/hermes/`, `deploy/`는 제품 경계를 표시하는 초기 scaffolding이며
+  구현 완료 근거가 아니다.
 - 제품 코드(`fhe/`), 테스트(`tests/`), 제품 스크립트(`scripts/`)는 삭제된 상태다.
 - 과거 구현 완료 기록은 현재 제품 상태의 근거가 아니다.
 - `feature_list.json`과 `docs/fhe-features.md`의 기능은 검증 전까지 `not_started`다.
@@ -69,12 +76,13 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 
 ## 다음 시작점
 
-1. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
-2. `docs/fhe-development-plan.md`의 P0부터 새 패키지와 검증 하네스를 만든다.
-3. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
+1. 독립 FHE-Privacy 원격 저장소를 생성한 뒤 이 저장소의 `origin`을 설정한다.
+2. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
+3. `docs/fhe-development-plan.md`의 P0부터 새 패키지와 검증 하네스를 만든다.
+4. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
    policy를 작은 spike로 검증한다.
-4. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
-5. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
+5. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
+6. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
 
 ## 남는 위험과 보안 주장 한계
 

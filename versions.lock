@@ -1,0 +1,28 @@
+# Reviewed runtime inputs for an FHE-Privacy release.
+#
+# Replace every placeholder only after compatibility, checksum/digest, sealed-mode, and E2E
+# verification. Never resolve "latest" or a mutable development tag during installation.
+
+schema_version = 1
+
+[openshell]
+source = "release"
+version = "UNVALIDATED"
+source_commit = "UNVALIDATED"
+
+[openshell.local]
+linux_amd64_sha256 = "UNVALIDATED"
+linux_arm64_sha256 = "UNVALIDATED"
+macos_arm64_sha256 = "UNVALIDATED"
+
+[openshell.containers]
+gateway_image = "UNVALIDATED"
+supervisor_image = "UNVALIDATED"
+
+[openshell.kubernetes]
+chart = "oci://ghcr.io/nvidia/openshell/helm-chart"
+chart_version = "UNVALIDATED"
+chart_digest = "UNVALIDATED"
+
+[hermes]
+image = "UNVALIDATED"
