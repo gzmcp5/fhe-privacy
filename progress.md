@@ -109,6 +109,9 @@
 - README와 `docs/distribution-guide.md`에서 새 draw.io 원본을 연결했다.
 - draw.io XML 구조, cell ID uniqueness, edge source/target와 문서 링크를 확인했다. 제품 `./init.sh`는
   여전히 존재하지 않아 실행하지 않았고 기능 상태는 변경하지 않았다.
+- 후속 시각 검토에서 중앙 통로의 화살표가 교차할 수 있어 Gateway/Hermes와 Core/Bridge를 같은 행에
+  재배치했다. orchestration, masked input, unresolved response, handle-only MCP가 서로 다른 수평 lane을
+  사용하고 Hermes→Bridge만 sandbox 내부 수직 lane을 사용하도록 모든 waypoint를 제거했다.
 
 ## 2026-07-14 clone 후 native runtime 재현 경로
 
