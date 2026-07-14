@@ -27,6 +27,25 @@
 - **비범위:** 웹서버, 채팅 UI, 자체 LLM provider loop, DB viewer, web_search.
 - **다음 시작점:** 확정 설계의 구현 가능성 spike와 P0 문서/검증 하네스 재구축.
 
+## 2026-07-14 macOS arm64 native runtime 생성
+
+- macOS arm64에서 `./tools/bootstrap-dev-runtime.sh`를 실행해 OpenShell v0.0.80 공식
+  `openshell-aarch64-apple-darwin.tar.gz` artifact를 다운로드하고 archive checksum과
+  `openshell --version`을 확인했다.
+- gitignore된 `artifacts/openshell/0.0.80/bin/openshell`에 34MB 바이너리를 설치하고
+  `artifacts/bin/openshell` symlink를 갱신했다. 설치된 바이너리 SHA-256은
+  `3db26ebe766020133ad70f7a021bb0fea012bdf1141455a878ea97de2da3b103`이다.
+- 같은 bootstrap에서 OpenFHE core `1306d14f8c26bb6150d3e6ad54f28dfe1007689e`,
+  OpenFHE-Python `4f13e2c3a7e35f73f4816904dabd3a3db47b6e51`, packager
+  `099b8bddd045e941fb8a91f48214da800d9bc27c` 기준으로 CPython 3.13 macOS 14 arm64 wheel을
+  source build했다.
+- 생성된 wheel은 gitignore된
+  `vendor/wheels/openfhe-1.5.1.0.14.0-cp313-cp313-macosx_14_0_arm64.whl`이며 SHA-256은
+  `1c99f50a6203cb71f9a2f083dde40c7375e9ebac58d36f85ddf46fcf16edfc2c`이다.
+- 격리 venv 설치 후 `tools/openfhe/smoke.py`가 BFV, BGV, CKKS, Boolean FHE와 BGV 2-of-2 partial
+  decrypt/fusion smoke test를 통과했다. 제품 구현과 E2E 보안 경로 검증은 아직 없으므로
+  `feature_list.json` 상태는 변경하지 않았다.
+
 ## 2026-07-14 독립 제품 저장소 전환 및 세션 종료
 
 - OpenShell fork 내부의 `fhe-privacy/` 설계 snapshot을 `git subtree split`로 독립 저장소에 분리해

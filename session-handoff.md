@@ -31,6 +31,12 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
   `./tools/bootstrap-dev-runtime.sh`를 실행한다. 이 entrypoint는 고정 OpenShell asset을 다운로드·검증하고
   플랫폼별 OpenFHE wheel을 고정 commit에서 빌드·smoke test한다. macOS에서는 실행 준비가 가능하지만
   실제 Mac 테스트 근거 전까지 OpenShell compatibility와 OpenFHE checksum 상태를 validated로 바꾸지 않는다.
+- 2026-07-14 macOS arm64 로컬 실행에서 bootstrap이 완료됐다. 생성물은 gitignore된
+  `artifacts/openshell/0.0.80/bin/openshell`과
+  `vendor/wheels/openfhe-1.5.1.0.14.0-cp313-cp313-macosx_14_0_arm64.whl`이며, OpenFHE wheel SHA-256은
+  `1c99f50a6203cb71f9a2f083dde40c7375e9ebac58d36f85ddf46fcf16edfc2c`이다. Smoke test는 BFV/BGV/CKKS,
+  Boolean FHE, BGV 2-of-2 partial decrypt/fusion을 통과했다. 이 근거는 native dependency build
+  확인이며 제품 기능 `passing` 근거는 아니다.
 - 과거 구현 완료 기록은 현재 제품 상태의 근거가 아니다.
 - `feature_list.json`과 `docs/fhe-features.md`의 기능은 검증 전까지 `not_started`다.
 - `./init.sh`는 구현 재개 후 복구할 완료 게이트이며 현재 설계 검증에는 사용하지 않는다.
