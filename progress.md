@@ -96,6 +96,20 @@
   negative test 전까지 `compatibility = "unvalidated"`를 유지한다.
 - 제품 `./init.sh`는 여전히 존재하지 않아 실행하지 못했고 기능 상태를 `passing`으로 바꾸지 않았다.
 
+## 2026-07-14 FHE-Privacy · OpenShell · Hermes 제품 관계 다이어그램
+
+- `docs/0. product-runtime-relationship.drawio`를 추가해 세 제품의 소유·실행 관계를 상위 수준에서
+  분리해 표현했다.
+- FHE-Privacy는 최상위 제품, 설치/실행 진입점과 신뢰 프라이버시 경계로 표시했다. Secure Gateway,
+  Privacy Core, Local Reveal 영역은 FHE-Privacy가 소유한다.
+- OpenShell은 FHE-Privacy가 버전과 무결성을 고정하고 orchestration하는 별도 sandbox runtime
+  dependency로 표시했으며, FHE-Privacy와 같은 프로세스나 권한 경계로 합치지 않았다.
+- Hermes Agent와 stateless MCP Bridge는 sealed OpenShell sandbox 안의 동일한 비신뢰 principal로
+  표시했다. 데이터 경로는 masked envelope, handle-only HTTPS/mTLS와 unresolved response만 허용한다.
+- README와 `docs/distribution-guide.md`에서 새 draw.io 원본을 연결했다.
+- draw.io XML 구조, cell ID uniqueness, edge source/target와 문서 링크를 확인했다. 제품 `./init.sh`는
+  여전히 존재하지 않아 실행하지 않았고 기능 상태는 변경하지 않았다.
+
 ## 2026-07-14 clone 후 native runtime 재현 경로
 
 - `AGENTS.md`의 빠른 시작을 현재 존재하지 않는 과거 `./init.sh setup`에서

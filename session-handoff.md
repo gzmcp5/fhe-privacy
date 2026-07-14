@@ -32,6 +32,9 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
   CPython 3.13 OpenFHE wheel build/smoke를 연결한다. 생성 wheel checksum은 `versions.lock`에
   고정됐고, `tools/openshell/openshell.ps1`가 PowerShell 호출을 WSL binary로 전달한다. OpenShell의
   WSL 전체 호환성은 sealed/negative test 전까지 `unvalidated`다.
+- `docs/0. product-runtime-relationship.drawio`가 FHE-Privacy를 최상위 제품/프라이버시 경계,
+  OpenShell을 별도 sandbox runtime dependency, Hermes와 MCP Bridge를 sealed sandbox 내부의 비신뢰
+  workload로 표현한다. README와 배포 문서에서 이 관계도를 진입점으로 연결한다.
 - 새 clone에서 native runtime이 필요한 에이전트는 `AGENTS.md`에 따라
   `./tools/bootstrap-dev-runtime.sh`를 실행한다. 이 entrypoint는 고정 OpenShell asset을 다운로드·검증하고
   플랫폼별 OpenFHE wheel을 고정 commit에서 빌드·smoke test한다. macOS에서는 실행 준비가 가능하지만

@@ -6,6 +6,8 @@ FHE-Privacy가 최상위 제품과 설치 진입점이다. OpenShell은 FHE-Priv
 고정하고 내부적으로 설치하거나 배포하는 sandbox runtime dependency다. 사용자는 secure mode에서
 OpenShell CLI로 Hermes를 직접 실행하지 않는다.
 
+제품 관계 draw.io 원본: [`0. product-runtime-relationship.drawio`](0.%20product-runtime-relationship.drawio)
+
 ```text
 fhe-privacy install
   -> 검증된 OpenShell host package 또는 Helm chart 설치
