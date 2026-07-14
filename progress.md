@@ -116,7 +116,7 @@
   신뢰 경계, 데이터 경로, 정상 흐름, 금지 경로, 실패 처리와 현재 상태를 요약했다. README와 배포
   문서는 설명 문서를 우선 진입점으로, draw.io를 편집 원본으로 연결한다.
 - 같은 문서에 MCP 통신 규격, 일반 MCP Server와 FHE-Privacy의 무상태 MCP Bridge 차이 및 실제
-  권한 검증이 Privacy Core에 있다는 점을 개조식으로 추가했다.
+  권한 검증이 Privacy Core에 있다는 점을 비교표로 추가했다.
 
 ## 2026-07-14 clone 후 native runtime 재현 경로
 
