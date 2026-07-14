@@ -19,7 +19,8 @@ separate processes and security principals.
 ## Repository layout
 
 - `docs/`: security decisions, architecture, contracts, and development plan
-- `harness/`: feature state, progress, and session handoff
+- `AGENTS.md` and `CLAUDE.md`: agent startup instructions and security invariants
+- `feature_list.json`, `progress.md`, and `session-handoff.md`: feature state and lifecycle handoff
 - `adapters/openshell/`: the narrow integration boundary with OpenShell
 - `images/hermes/`: the Hermes sandbox image definition and stateless MCP Bridge packaging
 - `deploy/`: local and Kubernetes product-level deployment orchestration
@@ -38,5 +39,5 @@ as sealed management access, workload identity, and policy-revision binding in O
 the tested OpenShell commit or release here. Do not copy privacy masking, Vault, key-share, or reveal
 logic into OpenShell.
 
-Read `AGENTS.md`, `harness/session-handoff.md`, and
+Read `AGENTS.md`, `session-handoff.md`, and
 `docs/1-0. security-architecture-index.md` before making changes.
