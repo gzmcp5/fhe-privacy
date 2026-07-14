@@ -12,6 +12,9 @@
   `artifacts/openshell/0.0.80/bin/openshell`에 설치하고 `artifacts/bin/openshell`로 연결했다.
   공식 archive SHA-256과 실행 버전을 확인했으며 `versions.lock`에 release commit과 checksum을
   고정했다. 다른 플랫폼, container, chart는 아직 검증하지 않았다.
+- **OpenFHE wheel:** OpenFHE 1.5.1/OpenFHE-Python 1.5.1.0을 CPython 3.13용으로 source build한
+  Ubuntu 24.04 x86-64 wheel을 `vendor/wheels/`에 설치하고 checksum을 `versions.lock`에 고정했다.
+  macOS 14 arm64는 별도 build workflow를 준비했지만 macOS runner 검증 전이라 `UNVALIDATED`다.
 - **테스트:** 현재 제품 코드(`fhe/`), 테스트(`tests/`), 제품 스크립트(`scripts/`)를 제거한 상태라 `./init.sh` 검증 기준은 더 이상 통과하지 않는다.
 - **상태:** 독립 FHE-Privacy 제품 저장소로 분리 완료. 제품 코드는 없고 루트 harness와 설계 문서,
   OpenShell/Hermes/deploy scaffolding만 있는 구현 전 상태.
@@ -57,6 +60,22 @@
 - `versions.lock`에 release version, tag commit과 Linux amd64 archive checksum을 기록했다.
 - 제품 검증 entrypoint인 `./init.sh`는 현재 저장소에 없어 실행하지 못했으며 기능 상태를
   `passing`으로 변경하지 않았다.
+
+## 2026-07-14 OpenFHE 1.5.1 플랫폼 wheel 준비
+
+- 공식 Ubuntu 24.04 wheel이 `py3-none-any`로 표시되지만 내부에는 CPython 3.12 native module만
+  포함해 Python 3.13 import가 실패함을 확인했다.
+- OpenFHE core `v1.5.1`, OpenFHE-Python `v1.5.1.0`과 공식 packager commit을 고정하고
+  `tools/openfhe/build-wheel.sh`로 CPython 3.13 native wheel을 source build했다.
+- Linux wheel을 `vendor/wheels/openfhe-1.5.1.0.24.4-cp313-cp313-linux_x86_64.whl`에 두고
+  ABI/platform tag와 `Root-Is-Purelib: false` metadata를 바로잡았다. wheel은 gitignore 대상이다.
+- 격리된 `.venv`에 wheel을 설치해 BFV, BGV, CKKS, Boolean FHE와 BGV 2-party partial
+  decrypt/fusion smoke test를 통과했다.
+- `.github/workflows/openfhe-wheels.yml`에 Ubuntu 24.04 x86-64와 macOS 14 arm64 별도 wheel build,
+  smoke test와 artifact upload를 구성했다. macOS job은 아직 실행하지 않아 checksum을 확정하지 않았다.
+- 이 smoke test는 backend API 호환성 근거이며 장치 분리, missing-share 거부와 secret lifecycle까지
+  구현·검증됐다는 근거가 아니므로 `feature_list.json` 상태는 변경하지 않았다.
+- 제품 검증 entrypoint인 `./init.sh`는 현재 저장소에 없어 실행하지 못했다.
 
 ## 2026-07-13 보안 아키텍처 전체 기준 정리
 

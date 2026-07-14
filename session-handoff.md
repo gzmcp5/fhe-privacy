@@ -23,6 +23,10 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
   `artifacts/openshell/0.0.80/bin/openshell`에 설치되어 있고 `artifacts/bin/openshell`이 이를
   가리킨다. `versions.lock`에는 tag commit과 공식 archive checksum이 고정되어 있다. 다른 플랫폼,
   container와 Helm chart 입력은 계속 `UNVALIDATED`다.
+- OpenFHE 1.5.1/OpenFHE-Python 1.5.1.0의 Ubuntu 24.04 x86-64 CPython 3.13 wheel이 gitignore된
+  `vendor/wheels/`에 설치되어 있다. `tools/openfhe/`에는 pinned source build와 BFV/BGV/CKKS/Boolean,
+  2-party fusion smoke test가 있고 `.github/workflows/openfhe-wheels.yml`은 Linux와 macOS arm64 wheel을
+  별도 생성한다. Linux wheel은 검증·checksum 고정됐고 macOS wheel은 runner 실행 전 `UNVALIDATED`다.
 - 과거 구현 완료 기록은 현재 제품 상태의 근거가 아니다.
 - `feature_list.json`과 `docs/fhe-features.md`의 기능은 검증 전까지 `not_started`다.
 - `./init.sh`는 구현 재개 후 복구할 완료 게이트이며 현재 설계 검증에는 사용하지 않는다.

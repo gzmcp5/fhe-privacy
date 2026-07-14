@@ -24,5 +24,23 @@ chart = "oci://ghcr.io/nvidia/openshell/helm-chart"
 chart_version = "UNVALIDATED"
 chart_digest = "UNVALIDATED"
 
+[openfhe]
+core_version = "1.5.1"
+core_source_commit = "1306d14f8c26bb6150d3e6ad54f28dfe1007689e"
+python_version = "1.5.1.0"
+python_source_commit = "4f13e2c3a7e35f73f4816904dabd3a3db47b6e51"
+packager_source_commit = "099b8bddd045e941fb8a91f48214da800d9bc27c"
+python_abi = "cp313"
+
+[openfhe.local.linux_amd64]
+platform = "ubuntu-24.04-x86_64"
+wheel = "openfhe-1.5.1.0.24.4-cp313-cp313-linux_x86_64.whl"
+sha256 = "fd06c3ab143165e70ebacbfa413c2c4e57f6b0d94f87622f0655247c65ef6916"
+
+[openfhe.local.macos_arm64]
+platform = "macos-14-arm64"
+wheel = "openfhe-1.5.1.0.14.0-cp313-cp313-macosx_14_0_arm64.whl"
+sha256 = "UNVALIDATED"
+
 [hermes]
 image = "UNVALIDATED"
