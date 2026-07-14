@@ -8,6 +8,10 @@
 ## 현재 상태
 
 - **최종 업데이트:** 2026-07-14
+- **OpenShell 로컬 바이너리:** 공식 `v0.0.80` Linux x86-64 musl artifact를
+  `artifacts/openshell/0.0.80/bin/openshell`에 설치하고 `artifacts/bin/openshell`로 연결했다.
+  공식 archive SHA-256과 실행 버전을 확인했으며 `versions.lock`에 release commit과 checksum을
+  고정했다. 다른 플랫폼, container, chart는 아직 검증하지 않았다.
 - **테스트:** 현재 제품 코드(`fhe/`), 테스트(`tests/`), 제품 스크립트(`scripts/`)를 제거한 상태라 `./init.sh` 검증 기준은 더 이상 통과하지 않는다.
 - **상태:** 독립 FHE-Privacy 제품 저장소로 분리 완료. 제품 코드는 없고 루트 harness와 설계 문서,
   OpenShell/Hermes/deploy scaffolding만 있는 구현 전 상태.
@@ -41,6 +45,18 @@
 - 검증 결과: `feature_list.json` JSON, `versions.lock` TOML, draw.io XML과 핵심 문서 링크가 유효하다.
   기존 RAG 문서의 누락 SVG 링크 두 개는 RAG 비범위의 선행 문제로 남아 있다.
 - 다음 세션은 P0 package/test/CLI skeleton과 `init.sh` 복구에서 시작한다.
+
+## 2026-07-14 OpenShell 0.0.80 로컬 바이너리 설치
+
+- NVIDIA/OpenShell 공식 `v0.0.80` release의 `openshell-x86_64-unknown-linux-musl.tar.gz`를 사용했다.
+- 공식 checksum 파일과 내려받은 archive의 SHA-256
+  `e06ac01e7527b4aadeed549265850a197f3d7ed9347f8ba476a062f10d274611`이 일치함을 확인했다.
+- gitignore된 `artifacts/openshell/0.0.80/bin/openshell`에 설치하고
+  `artifacts/bin/openshell` symlink를 만들었다.
+- `artifacts/bin/openshell --version` 결과는 `openshell 0.0.80`이다.
+- `versions.lock`에 release version, tag commit과 Linux amd64 archive checksum을 기록했다.
+- 제품 검증 entrypoint인 `./init.sh`는 현재 저장소에 없어 실행하지 못했으며 기능 상태를
+  `passing`으로 변경하지 않았다.
 
 ## 2026-07-13 보안 아키텍처 전체 기준 정리
 

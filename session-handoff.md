@@ -19,6 +19,10 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 - Agent 지침과 상태 파일은 저장소 루트의 `AGENTS.md`, `CLAUDE.md`, `feature_list.json`,
   `progress.md`, `session-handoff.md`에 둔다. 별도 `harness/` routing directory는 사용하지 않는다.
 - 제품 코드(`fhe/`), 테스트(`tests/`), 제품 스크립트(`scripts/`)는 삭제된 상태다.
+- OpenShell 공식 `v0.0.80` Linux x86-64 musl 바이너리가 gitignore된
+  `artifacts/openshell/0.0.80/bin/openshell`에 설치되어 있고 `artifacts/bin/openshell`이 이를
+  가리킨다. `versions.lock`에는 tag commit과 공식 archive checksum이 고정되어 있다. 다른 플랫폼,
+  container와 Helm chart 입력은 계속 `UNVALIDATED`다.
 - 과거 구현 완료 기록은 현재 제품 상태의 근거가 아니다.
 - `feature_list.json`과 `docs/fhe-features.md`의 기능은 검증 전까지 `not_started`다.
 - `./init.sh`는 구현 재개 후 복구할 완료 게이트이며 현재 설계 검증에는 사용하지 않는다.

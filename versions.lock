@@ -7,11 +7,11 @@ schema_version = 1
 
 [openshell]
 source = "release"
-version = "UNVALIDATED"
-source_commit = "UNVALIDATED"
+version = "0.0.80"
+source_commit = "709aa0fe3e9e4d2b5fea336b5d6e393b45481898"
 
 [openshell.local]
-linux_amd64_sha256 = "UNVALIDATED"
+linux_amd64_sha256 = "e06ac01e7527b4aadeed549265850a197f3d7ed9347f8ba476a062f10d274611"
 linux_arm64_sha256 = "UNVALIDATED"
 macos_arm64_sha256 = "UNVALIDATED"
 
