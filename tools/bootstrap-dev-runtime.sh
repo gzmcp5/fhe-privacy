@@ -12,13 +12,15 @@ if ! command -v "${PYTHON}" >/dev/null 2>&1; then
     echo "Development bootstrap requires Python 3.13; '${PYTHON}' was not found" >&2
     exit 1
 fi
+PYTHON=$("${PYTHON}" -c 'import os, sys; print(os.path.realpath(sys.executable))')
 
 echo "Preparing the checksum-pinned OpenShell runtime"
 ./tools/openshell/install.sh --allow-unvalidated
 
-case "$(uname -s):$(uname -m)" in
-    Linux:x86_64) WHEEL_TARGET=linux_amd64 ;;
-    Darwin:arm64) WHEEL_TARGET=macos_arm64 ;;
+case "${FHE_PRIVACY_RUNTIME_TARGET:-}:$(uname -s):$(uname -m)" in
+    windows_wsl2_amd64:Linux:x86_64) WHEEL_TARGET=windows_wsl2_amd64 ;;
+    :Linux:x86_64) WHEEL_TARGET=linux_amd64 ;;
+    :Darwin:arm64) WHEEL_TARGET=macos_arm64 ;;
     *)
         echo "Unsupported OpenFHE development target: $(uname -s) $(uname -m)" >&2
         exit 1
@@ -35,6 +37,28 @@ lock = tomllib.loads(pathlib.Path(sys.argv[1]).read_text())
 print(lock["openfhe"]["local"][sys.argv[2]]["wheel"])
 PY
 )
+
+if [[ ${WHEEL_TARGET} == windows_wsl2_amd64 ]]; then
+    if ! grep -qi 'microsoft-standard-WSL2' /proc/sys/kernel/osrelease; then
+        echo "Windows runtime bootstrap must run inside WSL 2" >&2
+        exit 1
+    fi
+    DISTRO_RELEASE=$(
+        "${PYTHON}" - "${ROOT_DIR}/versions.lock" <<'PY'
+import pathlib
+import tomllib
+
+lock = tomllib.loads(pathlib.Path(__import__("sys").argv[1]).read_text())
+print(lock["openfhe"]["local"]["windows_wsl2_amd64"]["distro_release"])
+PY
+    )
+    # shellcheck disable=SC1091
+    . /etc/os-release
+    if [[ ${VERSION_ID} != "${DISTRO_RELEASE}" ]]; then
+        echo "The locked Windows runtime requires Ubuntu ${DISTRO_RELEASE} under WSL 2, found ${VERSION_ID}" >&2
+        exit 1
+    fi
+fi
 
 if [[ ! -f ${WHEEL_DIR}/${EXPECTED_WHEEL} ]]; then
     echo "Building the pinned OpenFHE wheel for ${WHEEL_TARGET}"

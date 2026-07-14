@@ -11,37 +11,59 @@ OPENFHE_PYTHON_COMMIT=4f13e2c3a7e35f73f4816904dabd3a3db47b6e51
 PACKAGER_COMMIT=099b8bddd045e941fb8a91f48214da800d9bc27c
 
 PYTHON=${PYTHON:-python3.13}
-PYTHON_REAL=$(${PYTHON} -c 'import sys; print(sys.executable)')
+PYTHON_REAL=$(${PYTHON} -c 'import os, sys; print(os.path.realpath(sys.executable))')
 PYTHON_VERSION=$(${PYTHON_REAL} -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
 if [[ ${PYTHON_VERSION} != "3.13" ]]; then
     echo "OpenFHE wheel build requires Python 3.13, found ${PYTHON_VERSION}" >&2
     exit 1
 fi
 
-case "$(uname -s):$(uname -m)" in
-    Linux:x86_64)
+case "${FHE_PRIVACY_RUNTIME_TARGET:-}:$(uname -s):$(uname -m)" in
+    windows_wsl2_amd64:Linux:x86_64)
+        if ! grep -qi 'microsoft-standard-WSL2' /proc/sys/kernel/osrelease; then
+            echo "windows_wsl2_amd64 must run inside WSL 2" >&2
+            exit 1
+        fi
+        # shellcheck disable=SC1091
+        . /etc/os-release
+        if [[ ${VERSION_ID} != "26.04" ]]; then
+            echo "The locked Windows WSL build requires Ubuntu 26.04, found ${VERSION_ID}" >&2
+            exit 1
+        fi
+        OS_NAME=Ubuntu
+        OS_RELEASE=26.04
+        PLATFORM_TAG=linux_x86_64
+        ;;
+    :Linux:x86_64)
         OS_NAME=Ubuntu
         OS_RELEASE=24.04
         PLATFORM_TAG=linux_x86_64
         ;;
-    Darwin:arm64)
+    :Darwin:arm64)
         OS_NAME=macOS
         OS_RELEASE=14.0
         PLATFORM_TAG=macosx_14_0_arm64
         export MACOSX_DEPLOYMENT_TARGET=14.0
         ;;
     *)
-        echo "Unsupported OpenFHE wheel target: $(uname -s) $(uname -m)" >&2
+        echo "Unsupported OpenFHE wheel target: ${FHE_PRIVACY_RUNTIME_TARGET:-native} $(uname -s) $(uname -m)" >&2
         exit 1
         ;;
 esac
 
 rm -rf "${BUILD_ROOT}"
-mkdir -p "${BUILD_ROOT}" "${OUTPUT_DIR}" "${BUILD_ROOT}/python-bin"
-ln -s "${PYTHON_REAL}" "${BUILD_ROOT}/python-bin/python3"
+mkdir -p "${BUILD_ROOT}" "${OUTPUT_DIR}"
 
 git clone https://github.com/openfheorg/openfhe-python-packager.git "${PACKAGER_DIR}"
 git -C "${PACKAGER_DIR}" checkout --detach "${PACKAGER_COMMIT}"
+
+# uv-managed Python cannot create a venv when the interpreter is reached through
+# an arbitrary python3 symlink. Seed the packager environment with the canonical
+# interpreter path before its get-env.sh activates it.
+"${PYTHON_REAL}" -m venv "${PACKAGER_DIR}/env_for_openfhe_wheel"
+"${PACKAGER_DIR}/env_for_openfhe_wheel/bin/pip" install \
+    "pybind11[global]" \
+    --upgrade pip setuptools wheel build twine
 
 mkdir -p "${PACKAGER_DIR}/build"
 git clone https://github.com/openfheorg/openfhe-development.git \
@@ -64,7 +86,6 @@ rm -f "${PACKAGER_DIR}/ci-vars.sh.bak"
 
 (
     cd "${PACKAGER_DIR}"
-    export PATH="${BUILD_ROOT}/python-bin:${PATH}"
     # shellcheck disable=SC1091
     . ./scripts/get-env.sh
     ./scripts/build-binaries.sh

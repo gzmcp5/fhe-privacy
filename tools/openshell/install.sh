@@ -16,15 +16,21 @@ if [[ $# -ne 0 ]]; then
     exit 2
 fi
 
-case "$(uname -s):$(uname -m)" in
-    Linux:x86_64) TARGET=linux_amd64 ;;
-    Linux:aarch64 | Linux:arm64) TARGET=linux_arm64 ;;
-    Darwin:arm64) TARGET=macos_arm64 ;;
+case "${FHE_PRIVACY_RUNTIME_TARGET:-}:$(uname -s):$(uname -m)" in
+    windows_wsl2_amd64:Linux:x86_64) TARGET=windows_wsl2_amd64 ;;
+    :Linux:x86_64) TARGET=linux_amd64 ;;
+    :Linux:aarch64 | :Linux:arm64) TARGET=linux_arm64 ;;
+    :Darwin:arm64) TARGET=macos_arm64 ;;
     *)
-        echo "Unsupported OpenShell target: $(uname -s) $(uname -m)" >&2
+        echo "Unsupported OpenShell target: ${FHE_PRIVACY_RUNTIME_TARGET:-native} $(uname -s) $(uname -m)" >&2
         exit 1
         ;;
 esac
+
+if [[ ${TARGET} == windows_wsl2_amd64 ]] && ! grep -qi 'microsoft-standard-WSL2' /proc/sys/kernel/osrelease; then
+    echo "windows_wsl2_amd64 must run inside WSL 2" >&2
+    exit 1
+fi
 
 METADATA=$(
     "${PYTHON}" - "${LOCK_FILE}" "${TARGET}" <<'PY'

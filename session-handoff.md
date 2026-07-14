@@ -27,6 +27,11 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
   `vendor/wheels/`에 설치되어 있다. `tools/openfhe/`에는 pinned source build와 BFV/BGV/CKKS/Boolean,
   2-party fusion smoke test가 있고 `.github/workflows/openfhe-wheels.yml`은 Linux와 macOS arm64 wheel을
   별도 생성한다. Linux wheel은 검증·checksum 고정됐고 macOS wheel은 runner 실행 전 `UNVALIDATED`다.
+- Windows x86-64는 OpenShell의 공식 host 경계에 맞춰 native `.exe`가 아닌 Ubuntu 26.04 WSL 2로
+  지원한다. `tools/bootstrap-dev-runtime.ps1`가 OpenShell v0.0.80 Linux musl binary 설치와 WSL용
+  CPython 3.13 OpenFHE wheel build/smoke를 연결한다. 생성 wheel checksum은 `versions.lock`에
+  고정됐고, `tools/openshell/openshell.ps1`가 PowerShell 호출을 WSL binary로 전달한다. OpenShell의
+  WSL 전체 호환성은 sealed/negative test 전까지 `unvalidated`다.
 - 새 clone에서 native runtime이 필요한 에이전트는 `AGENTS.md`에 따라
   `./tools/bootstrap-dev-runtime.sh`를 실행한다. 이 entrypoint는 고정 OpenShell asset을 다운로드·검증하고
   플랫폼별 OpenFHE wheel을 고정 commit에서 빌드·smoke test한다. macOS에서는 실행 준비가 가능하지만

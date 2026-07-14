@@ -35,6 +35,12 @@ asset = "openshell-aarch64-apple-darwin.tar.gz"
 sha256 = "f4d356297d7577067bf814a4641fd0014a76c7e0e8a8c3c537f6d6bdff4e8720"
 compatibility = "unvalidated"
 
+[openshell.local.windows_wsl2_amd64]
+platform = "windows-wsl2-linux-x86_64"
+asset = "openshell-x86_64-unknown-linux-musl.tar.gz"
+sha256 = "e06ac01e7527b4aadeed549265850a197f3d7ed9347f8ba476a062f10d274611"
+compatibility = "unvalidated"
+
 [openshell.containers]
 gateway_image = "UNVALIDATED"
 supervisor_image = "UNVALIDATED"
@@ -61,6 +67,12 @@ sha256 = "fd06c3ab143165e70ebacbfa413c2c4e57f6b0d94f87622f0655247c65ef6916"
 platform = "macos-14-arm64"
 wheel = "openfhe-1.5.1.0.14.0-cp313-cp313-macosx_14_0_arm64.whl"
 sha256 = "UNVALIDATED"
+
+[openfhe.local.windows_wsl2_amd64]
+platform = "ubuntu-26.04-wsl2-x86_64"
+distro_release = "26.04"
+wheel = "openfhe-1.5.1.0.26.4-cp313-cp313-linux_x86_64.whl"
+sha256 = "f979a017cdbe09a048e393a3611fedac0247788467ecb98d67de5b536d091ac3"
 
 [hermes]
 image = "UNVALIDATED"

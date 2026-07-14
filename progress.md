@@ -8,17 +8,20 @@
 ## 현재 상태
 
 - **최종 업데이트:** 2026-07-14
-- **OpenShell 로컬 바이너리:** 공식 `v0.0.80` Linux x86-64 musl artifact를
-  `artifacts/openshell/0.0.80/bin/openshell`에 설치하고 `artifacts/bin/openshell`로 연결했다.
+- **OpenShell 로컬 바이너리:** 공식 `v0.0.80` Linux x86-64 musl artifact를 Linux와 Windows WSL 2
+  경로의 `artifacts/openshell/0.0.80/bin/openshell`에 설치하고 `artifacts/bin/openshell`로 연결했다.
   공식 archive SHA-256과 실행 버전을 확인했으며 `versions.lock`에 release commit과 checksum을
-  고정했다. 다른 플랫폼, container, chart는 아직 검증하지 않았다.
+  고정했다. Windows에서는 `tools/openshell/openshell.ps1`로 WSL 바이너리를 호출한다. WSL의 전체
+  OpenShell 호환성, 다른 플랫폼, container, chart는 아직 검증하지 않았다.
 - **OpenFHE wheel:** OpenFHE 1.5.1/OpenFHE-Python 1.5.1.0을 CPython 3.13용으로 source build한
   Ubuntu 24.04 x86-64 wheel을 `vendor/wheels/`에 설치하고 checksum을 `versions.lock`에 고정했다.
-  macOS 14 arm64는 별도 build workflow를 준비했지만 macOS runner 검증 전이라 `UNVALIDATED`다.
+  Windows x86-64의 Ubuntu 26.04 WSL 2 wheel도 source build와 scheme smoke test를 통과해 checksum을
+  고정했다. macOS 14 arm64는 별도 build workflow를 준비했지만 runner 검증 전이라 `UNVALIDATED`다.
 - **새 clone runtime bootstrap:** `./tools/bootstrap-dev-runtime.sh`가 `versions.lock`의 플랫폼별
   OpenShell asset을 다운로드·checksum·버전 검증하고, 현재 플랫폼용 OpenFHE wheel이 없으면 고정
   commit에서 빌드한 뒤 scheme smoke test를 실행한다. Linux x86-64에서 전체 bootstrap을 확인했으며
   macOS arm64 호환성은 실제 Mac 검증 전까지 unvalidated다.
+  Windows는 `tools/bootstrap-dev-runtime.ps1`가 Ubuntu 26.04 WSL 2에 같은 검증을 연결한다.
 - **테스트:** 현재 제품 코드(`fhe/`), 테스트(`tests/`), 제품 스크립트(`scripts/`)를 제거한 상태라 `./init.sh` 검증 기준은 더 이상 통과하지 않는다.
 - **상태:** 독립 FHE-Privacy 제품 저장소로 분리 완료. 제품 코드는 없고 루트 harness와 설계 문서,
   OpenShell/Hermes/deploy scaffolding만 있는 구현 전 상태.
@@ -71,6 +74,27 @@
 - 검증 결과: `feature_list.json` JSON, `versions.lock` TOML, draw.io XML과 핵심 문서 링크가 유효하다.
   기존 RAG 문서의 누락 SVG 링크 두 개는 RAG 비범위의 선행 문제로 남아 있다.
 - 다음 세션은 P0 package/test/CLI skeleton과 `init.sh` 복구에서 시작한다.
+
+## 2026-07-14 Windows WSL 2 runtime 산출물
+
+- OpenShell v0.0.80에는 native Windows release asset이 없고 공식 Windows host 경로가 WSL 2임을
+  확인해 지원 경계를 Windows x86-64 + Ubuntu 26.04 WSL 2로 명시했다.
+- `tools/bootstrap-dev-runtime.ps1`를 추가해 PowerShell에서 WSL 경로 매핑, 고정 target 선택,
+  WSL filesystem의 OpenFHE build cache와 기존 checksum/smoke 검증을 한 번에 실행한다.
+- 공식 `openshell-x86_64-unknown-linux-musl.tar.gz`를 checksum 검증 후 설치했다. 설치 binary는
+  39,285,672 bytes, SHA-256 `0bbd03564f68bc04d9e74c0798c9b0c288eb0f7d817b7272e87c8e9c7ffc651c`이며
+  `tools/openshell/openshell.ps1 --version`에서 `openshell 0.0.80`을 확인했다.
+- OpenFHE 1.5.1/OpenFHE-Python 1.5.1.0을 Ubuntu 26.04 WSL 2의 CPython 3.13.3으로 source build해
+  `vendor/wheels/openfhe-1.5.1.0.26.4-cp313-cp313-linux_x86_64.whl`을 생성했다. 크기는
+  3,902,560 bytes, SHA-256은 `f979a017cdbe09a048e393a3611fedac0247788467ecb98d67de5b536d091ac3`이다.
+- 격리 venv에서 BFV, BGV, CKKS, Boolean FHE와 BGV 2-party partial decrypt/fusion smoke test가
+  모두 통과했다. 이는 WSL backend 호환성 근거이며 제품의 device-separated protocol 완료 근거는 아니다.
+- Windows Git의 CRLF checkout으로 bash가 깨지는 문제를 막기 위해 `.gitattributes`에서 `*.sh`를
+  LF로 고정했다. uv-managed Python symlink의 venv prefix 문제는 canonical interpreter로 packager
+  venv를 먼저 생성하도록 build script를 보강했다.
+- OpenShell은 다운로드/version 확인만 수행했으므로 filesystem/network/channel/sealed-management
+  negative test 전까지 `compatibility = "unvalidated"`를 유지한다.
+- 제품 `./init.sh`는 여전히 존재하지 않아 실행하지 못했고 기능 상태를 `passing`으로 바꾸지 않았다.
 
 ## 2026-07-14 clone 후 native runtime 재현 경로
 

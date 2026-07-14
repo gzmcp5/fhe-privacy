@@ -12,7 +12,8 @@ Supported download targets are:
 
 - Linux x86-64;
 - Linux arm64;
-- macOS 13 or later on Apple Silicon arm64.
+- macOS 13 or later on Apple Silicon arm64;
+- Windows x86-64 through an Ubuntu 26.04 WSL 2 distribution.
 
 Only Linux x86-64 is currently marked `validated`. A published upstream checksum establishes file
 identity; it does not establish FHE-Privacy compatibility. For an unvalidated target, a developer
@@ -22,6 +23,17 @@ must explicitly opt in while producing the platform verification evidence:
 ./tools/openshell/install.sh --allow-unvalidated
 artifacts/bin/openshell --version
 ```
+
+OpenShell does not publish a native Windows executable for v0.0.80. On Windows, run the repository
+bootstrap from PowerShell and invoke the installed Linux binary through the checked-in launcher:
+
+```powershell
+.\tools\bootstrap-dev-runtime.ps1 -Distro Ubuntu-26.04
+.\tools\openshell\openshell.ps1 -Distro Ubuntu-26.04 --version
+```
+
+`FHE_PRIVACY_WSL_DISTRO` can be set instead of passing `-Distro`. This support path is WSL 2, not a
+native Windows `.exe` claim.
 
 The installer fails closed when the OS/CPU pair has no lock entry, the target remains unvalidated
 without the explicit flag, the download digest differs, or `openshell --version` does not report the
