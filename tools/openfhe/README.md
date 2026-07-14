@@ -14,11 +14,19 @@ Homebrew `libomp` package. Run:
 
 ```bash
 PYTHON=python3.13 ./tools/openfhe/build-wheel.sh
-python3.13 -m venv .wheel-test
-.wheel-test/bin/pip install vendor/wheels/openfhe-*.whl
-.wheel-test/bin/python tools/openfhe/smoke.py
+python3.13 -m venv build/openfhe-wheel-test
+build/openfhe-wheel-test/bin/pip install vendor/wheels/openfhe-*.whl
+build/openfhe-wheel-test/bin/python tools/openfhe/smoke.py
 ```
 
 The smoke test covers BFV, BGV, CKKS, Boolean FHE and two-party partial decrypt/fusion. It is a
 backend compatibility check, not proof that the final product's device-separated 2-of-2 protocol
 or secret-lifecycle constraints are complete.
+
+On a fresh clone, agents should normally run `./tools/bootstrap-dev-runtime.sh` instead of invoking
+these steps separately. The bootstrap builds a missing platform wheel and executes this smoke test.
+
+`versions.lock` records the exact upstream commits, expected platform wheel names and the checksum
+of each validated wheel. The macOS arm64 entry remains `UNVALIDATED` until the workflow or the
+commands above run successfully on macOS and the resulting wheel checksum is recorded. Do not copy
+the Linux wheel to macOS: native wheels must be built and verified independently for each target.

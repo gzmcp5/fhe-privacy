@@ -25,6 +25,7 @@ separate processes and security principals.
 - `images/hermes/`: the Hermes sandbox image definition and stateless MCP Bridge packaging
 - `deploy/`: local and Kubernetes product-level deployment orchestration
 - `versions.lock`: reviewed OpenShell and Hermes release inputs; placeholders until validation
+- `tools/bootstrap-dev-runtime.sh`: clone 후 현재 플랫폼용 OpenShell과 OpenFHE 개발 runtime 준비
 
 ## Current status
 
@@ -38,6 +39,11 @@ Develop FHE-Privacy product behavior in this repository. Develop reusable sandbo
 as sealed management access, workload identity, and policy-revision binding in OpenShell, then pin
 the tested OpenShell commit or release here. Do not copy privacy masking, Vault, key-share, or reveal
 logic into OpenShell.
+
+For native runtime work after a fresh clone, run `./tools/bootstrap-dev-runtime.sh`. It downloads
+the exact OpenShell asset pinned in `versions.lock`, builds the platform-native OpenFHE wheel from
+pinned commits, and runs the OpenFHE compatibility smoke test. Generated binaries remain outside
+Git under `artifacts/` and `vendor/wheels/`.
 
 Read `AGENTS.md`, `session-handoff.md`, and
 `docs/1-0. security-architecture-index.md` before making changes.

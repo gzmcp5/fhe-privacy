@@ -10,3 +10,7 @@ workloads, service accounts, and network policies.
 
 No deployment may place the Secure Gateway and OpenShell Gateway in the same process or grant them
 the same filesystem, key, Vault, or reveal credentials.
+
+Developer runtime inputs are reproducible from `versions.lock`. Use
+`tools/openshell/install.sh` for the pinned platform binary and `tools/openfhe/build-wheel.sh` for the
+platform-native OpenFHE wheel; see the README beside each script for validation requirements.

@@ -27,6 +27,10 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
   `vendor/wheels/`에 설치되어 있다. `tools/openfhe/`에는 pinned source build와 BFV/BGV/CKKS/Boolean,
   2-party fusion smoke test가 있고 `.github/workflows/openfhe-wheels.yml`은 Linux와 macOS arm64 wheel을
   별도 생성한다. Linux wheel은 검증·checksum 고정됐고 macOS wheel은 runner 실행 전 `UNVALIDATED`다.
+- 새 clone에서 native runtime이 필요한 에이전트는 `AGENTS.md`에 따라
+  `./tools/bootstrap-dev-runtime.sh`를 실행한다. 이 entrypoint는 고정 OpenShell asset을 다운로드·검증하고
+  플랫폼별 OpenFHE wheel을 고정 commit에서 빌드·smoke test한다. macOS에서는 실행 준비가 가능하지만
+  실제 Mac 테스트 근거 전까지 OpenShell compatibility와 OpenFHE checksum 상태를 validated로 바꾸지 않는다.
 - 과거 구현 완료 기록은 현재 제품 상태의 근거가 아니다.
 - `feature_list.json`과 `docs/fhe-features.md`의 기능은 검증 전까지 `not_started`다.
 - `./init.sh`는 구현 재개 후 복구할 완료 게이트이며 현재 설계 검증에는 사용하지 않는다.

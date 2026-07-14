@@ -15,6 +15,10 @@
 - **OpenFHE wheel:** OpenFHE 1.5.1/OpenFHE-Python 1.5.1.0을 CPython 3.13용으로 source build한
   Ubuntu 24.04 x86-64 wheel을 `vendor/wheels/`에 설치하고 checksum을 `versions.lock`에 고정했다.
   macOS 14 arm64는 별도 build workflow를 준비했지만 macOS runner 검증 전이라 `UNVALIDATED`다.
+- **새 clone runtime bootstrap:** `./tools/bootstrap-dev-runtime.sh`가 `versions.lock`의 플랫폼별
+  OpenShell asset을 다운로드·checksum·버전 검증하고, 현재 플랫폼용 OpenFHE wheel이 없으면 고정
+  commit에서 빌드한 뒤 scheme smoke test를 실행한다. Linux x86-64에서 전체 bootstrap을 확인했으며
+  macOS arm64 호환성은 실제 Mac 검증 전까지 unvalidated다.
 - **테스트:** 현재 제품 코드(`fhe/`), 테스트(`tests/`), 제품 스크립트(`scripts/`)를 제거한 상태라 `./init.sh` 검증 기준은 더 이상 통과하지 않는다.
 - **상태:** 독립 FHE-Privacy 제품 저장소로 분리 완료. 제품 코드는 없고 루트 harness와 설계 문서,
   OpenShell/Hermes/deploy scaffolding만 있는 구현 전 상태.
@@ -48,6 +52,20 @@
 - 검증 결과: `feature_list.json` JSON, `versions.lock` TOML, draw.io XML과 핵심 문서 링크가 유효하다.
   기존 RAG 문서의 누락 SVG 링크 두 개는 RAG 비범위의 선행 문제로 남아 있다.
 - 다음 세션은 P0 package/test/CLI skeleton과 `init.sh` 복구에서 시작한다.
+
+## 2026-07-14 clone 후 native runtime 재현 경로
+
+- `AGENTS.md`의 빠른 시작을 현재 존재하지 않는 과거 `./init.sh setup`에서
+  `./tools/bootstrap-dev-runtime.sh`로 교체했다.
+- `versions.lock`에 OpenShell v0.0.80 공식 release URL, checksum manifest와 Linux x86-64,
+  Linux arm64, macOS arm64의 정확한 asset 이름 및 공식 SHA-256을 기록했다. 공식 checksum과 제품
+  호환성 상태를 분리해 Linux x86-64만 validated로 유지했다.
+- `tools/openshell/install.sh`는 OS/CPU에 맞는 고정 asset만 다운로드하고 SHA-256 및
+  `openshell --version`을 검증한 뒤 gitignore된 `artifacts/`에 설치한다.
+- `tools/openfhe/build-wheel.sh`의 고정 source build를 clone bootstrap에 연결하고, 만들어진 wheel을
+  격리 환경에 설치해 BFV/BGV/CKKS/Boolean/2-party fusion smoke test를 실행하도록 했다.
+- Linux x86-64에서 bootstrap 전체를 실행해 OpenShell 0.0.80과 기존 고정 OpenFHE wheel checksum,
+  모든 smoke test 통과를 확인했다. `./init.sh`는 아직 복구 전이라 실행할 수 없다.
 
 ## 2026-07-14 OpenShell 0.0.80 로컬 바이너리 설치
 
