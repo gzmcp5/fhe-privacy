@@ -12,8 +12,9 @@ User
 ```
 
 제품·runtime·Agent의 소유 및 실행 관계는
-[`docs/0. product-runtime-relationship.drawio`](docs/0.%20product-runtime-relationship.drawio)에서
-확인할 수 있다.
+[`docs/0. product-runtime-relationship.md`](docs/0.%20product-runtime-relationship.md)에서 설명하며,
+편집 가능한 원본은
+[`docs/0. product-runtime-relationship.drawio`](docs/0.%20product-runtime-relationship.drawio)다.
 
 OpenShell is a pinned runtime dependency, not the owner of FHE-Privacy. A release may install an
 OpenShell host package for local use or deploy the pinned OpenShell chart and images on Kubernetes.
