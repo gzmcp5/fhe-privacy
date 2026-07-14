@@ -127,14 +127,21 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 
 1. 새 세션 시작 시 `AGENTS.md`, 이 파일, `feature_list.json`, `progress.md`,
    `docs/1-0. security-architecture-index.md`, `docs/architecture-flow.md`를 순서대로 읽는다.
-2. `git status --short --branch`로 `main...origin/main` clean 상태를 확인한다.
-3. `docs/fhe-development-plan.md`의 P0부터 새 Python package/test/CLI skeleton과 `init.sh` 검증
+2. `git status --short --branch`로 사용자 편집 상태인 `docs/0. product-runtime-relationship.drawio`와
+   `docs/1. architecture-component-flow.drawio` 변경을 확인한다. 두 파일은 이번 종료 커밋에 포함하지 않았다.
+3. 제품 관계 문서와 두 draw.io에서 다음 책임 분리가 일치하는지 시각 검토한다.
+   - MCP Bridge: stdio MCP protocol 처리와 agent-safe Core 중계만 담당
+   - Privacy Core: session/handle/policy 검증, 상태 관리와 작업 dispatch 담당
+   - Crypto ingress: 입력 암호화
+   - Public Compute Worker: secret-free 동형연산
+   - PC/Phone Partial Authority + Fusion Sink: partial decrypt와 최종 plaintext 생성
+4. `docs/fhe-development-plan.md`의 P0부터 새 Python package/test/CLI skeleton과 `init.sh` 검증
    entrypoint를 복구한다. 첫 active feature는 하나만 선택한다.
-4. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
-5. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
+5. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
+6. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
    policy를 작은 spike로 검증한다.
-6. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
-7. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
+7. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
+8. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
 
 ## 남는 위험과 보안 주장 한계
 

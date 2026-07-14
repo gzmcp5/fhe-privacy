@@ -118,6 +118,22 @@
 - 같은 문서에 MCP 통신 규격, 일반 MCP Server와 FHE-Privacy의 무상태 MCP Bridge 차이 및 실제
   권한 검증이 Privacy Core에 있다는 점을 비교표로 추가했다.
 
+## 2026-07-14 제품 관계 검토 종료 지점
+
+- Masked envelope는 `sessionId`, `messageId`, `maskedText`, `policyVersion` 등의 구조화된 데이터이며,
+  `maskedText`가 Hermes를 거쳐 LLM에 전달되는 보호된 본문이다.
+- `{{phone:h_81bc...}}` 전체는 marker, `phone`은 marker type, `h_81bc...`는 opaque handle이다.
+  Handle 자체에서 plaintext, Vault 위치, key나 record metadata를 추론할 수 없어야 하며 실제 유효성은
+  Privacy Core의 session/type/context/provenance/TTL/operation 검증으로 결정한다.
+- MCP는 protocol이고 Stateless MCP Bridge는 그 protocol을 처리하는 비신뢰 stdio MCP Server다.
+  기존 MCP Server에 함께 있을 수 있던 상태·정책·연산 기능은 Privacy Core와 별도 Worker로 분리한다.
+- Privacy Core는 모든 암·복호 연산을 직접 수행하지 않는다. Crypto ingress가 입력 암호화,
+  Public Compute Worker가 secret-free 동형연산, PC/Phone Partial Authority와 Fusion Sink가 partial
+  decrypt와 최종 plaintext 생성을 담당한다. Core는 검증, 상태, dispatch와 결과 handle 발급을 담당한다.
+- 다음 세션은 사용자 편집 상태로 남은 `docs/0. product-runtime-relationship.drawio`와
+  `docs/1. architecture-component-flow.drawio`를 열어 위 책임 분리가 시각적으로 정확한지 확인하는
+  것부터 시작한다.
+
 ## 2026-07-14 clone 후 native runtime 재현 경로
 
 - `AGENTS.md`의 빠른 시작을 현재 존재하지 않는 과거 `./init.sh setup`에서
