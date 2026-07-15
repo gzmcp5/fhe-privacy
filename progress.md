@@ -102,6 +102,8 @@
   보이도록 세분화했다. Secure Gateway process 안에는 PII Engine과 Crypto Ingress module을 묶고,
   Hermes, MCP Bridge, Privacy Core, Vault Coordinator, Public FHE Worker, Reveal Coordinator,
   PC/Phone Partial Authority, Fusion Sink와 외부 LLM을 각각 별도 process/service로 표시했다.
+- 사용자 재배치본을 기준으로 큰 process container는 제거하고 기존 좌표와 화살표를 유지했다.
+  `PROCESS ·`, `MODULE ·`, `EXTERNAL SERVICE ·` 제목과 선 스타일로 같은 프로세스 정보를 다시 반영했다.
 - `docs/architecture-flow.md`에 process별 내부 책임과 배치 표를 추가했다. Hermes와 Bridge는 별도
   process지만 동일한 비신뢰 principal이고, secret share authority는 각각 독립 process라는 구분을
   명시했다.

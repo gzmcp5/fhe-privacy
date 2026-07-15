@@ -37,8 +37,9 @@ draw.io 원본: [`1. architecture-component-flow.drawio`](1.%20architecture-comp
 
 ## 프로세스 경계
 
-draw.io의 `PROCESS` 점선 상자는 OS process를, 바깥의 큰 색상 점선 영역은 trust/runtime boundary를
-뜻한다. 같은 trust boundary 안에 있어도 process와 권한 채널은 분리한다.
+draw.io에서 `PROCESS ·`로 시작하는 상자는 OS process를, `MODULE ·`로 시작하는 점선 상자는 같은
+process 내부 기능을, 바깥의 큰 색상 점선 영역은 trust/runtime boundary를 뜻한다. 같은 trust
+boundary 안에 있어도 process와 권한 채널은 분리한다.
 
 | Process | 내부 구성요소·상태 | 배치 |
 |---|---|---|
