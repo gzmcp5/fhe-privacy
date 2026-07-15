@@ -7,7 +7,7 @@
 
 ## 현재 상태
 
-- **최종 업데이트:** 2026-07-14
+- **최종 업데이트:** 2026-07-15
 - **OpenShell 로컬 바이너리:** 공식 `v0.0.80` Linux x86-64 musl artifact를 Linux와 Windows WSL 2
   경로의 `artifacts/openshell/0.0.80/bin/openshell`에 설치하고 `artifacts/bin/openshell`로 연결했다.
   공식 archive SHA-256과 실행 버전을 확인했으며 `versions.lock`에 release commit과 checksum을
@@ -98,6 +98,9 @@
 
 ## 2026-07-15 Hermes · LLM tool loop 명시
 
+- `docs/0-1. product-command-comparison.md`를 추가해 Hermes 단독 실행, OpenShell sandbox 실행,
+  FHE-Privacy secure gateway 실행의 사용자 커맨드를 초기화·실행·상태·로그·종료 작업별로 비교했다.
+  FHE-Privacy 커맨드는 구현 전 목표 인터페이스임을 명시했다.
 - `docs/0. product-runtime-relationship.md`의 정상 흐름에 Hermes와 LLM 사이의 provider 요청, tool call,
   result handle 반환과 최종 unresolved response 단계를 명시했다.
 - Gateway가 Hermes에 보내는 masked envelope 전체가 LLM provider payload로 그대로 전달되는 것은 아니다.

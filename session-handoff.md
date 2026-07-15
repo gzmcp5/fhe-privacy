@@ -40,6 +40,9 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
   envelope를 그대로 provider에 복사하지 않고, `maskedText`와 허용된 공개 context·tool 설명으로 LLM
   요청을 구성한다. LLM tool call → MCP 공개 연산 → result handle → LLM 후속 추론을 반복한 뒤 최종
   unresolved response를 Gateway에 반환한다.
+- `docs/0-1. product-command-comparison.md`는 Hermes 단독, OpenShell 안의 Hermes, FHE-Privacy 통합
+  실행 커맨드를 나란히 비교한다. Hermes/OpenShell은 현재 CLI 예시이고 `fhe-privacy`는 구현 전 목표
+  인터페이스다.
 - 새 clone에서 native runtime이 필요한 에이전트는 `AGENTS.md`에 따라
   `./tools/bootstrap-dev-runtime.sh`를 실행한다. 이 entrypoint는 고정 OpenShell asset을 다운로드·검증하고
   플랫폼별 OpenFHE wheel을 고정 commit에서 빌드·smoke test한다. macOS에서는 실행 준비가 가능하지만
