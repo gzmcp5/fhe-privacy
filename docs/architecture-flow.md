@@ -35,33 +35,6 @@ Smartphone
 
 draw.io 원본: [`1. architecture-component-flow.drawio`](1.%20architecture-component-flow.drawio)
 
-## 프로세스 경계
-
-draw.io에서 `PROCESS ·`로 시작하는 상자는 OS process를, `MODULE ·`로 시작하는 점선 상자는 같은
-process 내부 기능을, 바깥의 큰 색상 점선 영역은 trust/runtime boundary를 뜻한다. 같은 trust
-boundary 안에 있어도 process와 권한 채널은 분리한다.
-
-| Process | 내부 구성요소·상태 | 배치 |
-|---|---|---|
-| Secure Gateway | ingress/egress controller, PII Engine, Crypto Ingress | trusted host ingress |
-| Hermes Agent | conversation과 LLM/tool loop | OpenShell sealed sandbox |
-| Agent MCP Bridge | stdio MCP ↔ agent-safe HTTPS 변환 | OpenShell sealed sandbox |
-| Privacy Core | session, policy, handle 검증과 dispatch | trusted PC host |
-| Vault Coordinator | handle metadata와 ciphertext store | trusted PC host |
-| Public FHE Worker | public context 기반 secret-free 동형연산 | trusted PC host의 분리 process |
-| Reveal Coordinator | reveal policy, destination, nonce와 transcript | trusted PC host의 분리 process |
-| PC Partial Authority | `sk_pc`를 이용한 partial decrypt/unwrap | PC의 격리 process |
-| Phone Partial Authority | `sk_phone`을 이용한 partial decrypt/unwrap | enrolled phone app process |
-| Approved Fusion Sink | 두 partial 결합과 최종 plaintext 생성 | 승인된 PC terminal 또는 phone display process |
-| External LLM Provider | masked prompt 추론 | 외부 비신뢰 service |
-
-- PII Engine과 Crypto Ingress는 Secure Gateway process 내부 module이다.
-- Hermes와 MCP Bridge는 별도 process지만 같은 OpenShell sandbox principal이므로 서로를 신뢰 경계로
-  사용하지 않는다.
-- Vault는 단순 파일 경로가 아니라 Privacy Core와 분리된 Vault Coordinator process가 독점하는
-  ciphertext store다.
-- 완성된 secret key를 가지는 process는 없으며 PC와 phone share는 각 Partial Authority에만 존재한다.
-
 상세 결정:
 
 - [`1-1. pre-llm-ingress.md`](1-1.%20pre-llm-ingress.md)

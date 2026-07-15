@@ -40,11 +40,6 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
   envelope를 그대로 provider에 복사하지 않고, `maskedText`와 허용된 공개 context·tool 설명으로 LLM
   요청을 구성한다. LLM tool call → MCP 공개 연산 → result handle → LLM 후속 추론을 반복한 뒤 최종
   unresolved response를 Gateway에 반환한다.
-- `docs/1. architecture-component-flow.drawio`는 큰 색상 점선 영역을 trust/runtime boundary로,
-  `PROCESS ·` 제목을 OS process, `MODULE ·` 점선 상자를 같은 process 내부 기능으로 구분한다. PII
-  Engine과 Crypto Ingress는 Secure Gateway process
-  내부 module이며, Core·Vault·Worker·Reveal Coordinator·PC/Phone Authority·Fusion Sink는 각각 분리된
-  process다. Hermes와 MCP Bridge도 별도 process지만 같은 OpenShell 비신뢰 principal이다.
 - `docs/0-1. product-command-comparison.md`는 Hermes 단독, OpenShell 안의 Hermes, FHE-Privacy 통합
   실행 커맨드를 나란히 비교한다. Hermes/OpenShell은 현재 CLI 예시이고 `fhe-privacy`는 구현 전 목표
   인터페이스다.
