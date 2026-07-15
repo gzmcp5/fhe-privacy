@@ -96,6 +96,15 @@
   negative test 전까지 `compatibility = "unvalidated"`를 유지한다.
 - 제품 `./init.sh`는 여전히 존재하지 않아 실행하지 못했고 기능 상태를 `passing`으로 바꾸지 않았다.
 
+## 2026-07-15 Hermes · LLM tool loop 명시
+
+- `docs/0. product-runtime-relationship.md`의 정상 흐름에 Hermes와 LLM 사이의 provider 요청, tool call,
+  result handle 반환과 최종 unresolved response 단계를 명시했다.
+- Gateway가 Hermes에 보내는 masked envelope 전체가 LLM provider payload로 그대로 전달되는 것은 아니다.
+  Hermes adapter가 `maskedText`, 허용된 tool 설명과 최소 공개 context만 골라 LLM 요청을 구성한다.
+- LLM이 handle 기반 공개 연산을 요청하면 Hermes → MCP Bridge → Privacy Core → Public Compute Worker를
+  거쳐 result handle이 발급되고, Hermes가 이를 LLM에 돌려주는 tool loop가 필요에 따라 반복된다.
+
 ## 2026-07-14 FHE-Privacy · OpenShell · Hermes 제품 관계 다이어그램
 
 - `docs/0. product-runtime-relationship.drawio`를 추가해 세 제품의 소유·실행 관계를 상위 수준에서

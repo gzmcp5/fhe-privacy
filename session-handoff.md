@@ -36,6 +36,10 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
   OpenShell을 별도 sandbox runtime dependency, Hermes와 MCP Bridge를 sealed sandbox 내부의 비신뢰
   workload로 표현한다. `docs/0. product-runtime-relationship.md`가 각 경계, 화살표, 정상 흐름과
   금지 경로를 설명하며 README와 배포 문서에서 설명 문서를 진입점으로 연결한다.
+- 제품 관계 문서의 정상 흐름은 Hermes와 LLM 사이를 명시한다. Hermes는 Gateway에서 받은 masked
+  envelope를 그대로 provider에 복사하지 않고, `maskedText`와 허용된 공개 context·tool 설명으로 LLM
+  요청을 구성한다. LLM tool call → MCP 공개 연산 → result handle → LLM 후속 추론을 반복한 뒤 최종
+  unresolved response를 Gateway에 반환한다.
 - 새 clone에서 native runtime이 필요한 에이전트는 `AGENTS.md`에 따라
   `./tools/bootstrap-dev-runtime.sh`를 실행한다. 이 entrypoint는 고정 OpenShell asset을 다운로드·검증하고
   플랫폼별 OpenFHE wheel을 고정 commit에서 빌드·smoke test한다. macOS에서는 실행 준비가 가능하지만
