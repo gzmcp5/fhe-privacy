@@ -98,6 +98,13 @@
 
 ## 2026-07-15 Hermes · LLM tool loop 명시
 
+- `docs/1. architecture-component-flow.drawio`를 trust boundary만 표시하던 구조에서 OS process 경계까지
+  보이도록 세분화했다. Secure Gateway process 안에는 PII Engine과 Crypto Ingress module을 묶고,
+  Hermes, MCP Bridge, Privacy Core, Vault Coordinator, Public FHE Worker, Reveal Coordinator,
+  PC/Phone Partial Authority, Fusion Sink와 외부 LLM을 각각 별도 process/service로 표시했다.
+- `docs/architecture-flow.md`에 process별 내부 책임과 배치 표를 추가했다. Hermes와 Bridge는 별도
+  process지만 동일한 비신뢰 principal이고, secret share authority는 각각 독립 process라는 구분을
+  명시했다.
 - `docs/0-1. product-command-comparison.md`를 추가해 Hermes 단독 실행, OpenShell sandbox 실행,
   FHE-Privacy secure gateway 실행의 사용자 커맨드를 초기화·실행·상태·로그·종료 작업별로 비교했다.
   FHE-Privacy 커맨드는 구현 전 목표 인터페이스임을 명시했다.
