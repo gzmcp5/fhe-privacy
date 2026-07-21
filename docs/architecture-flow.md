@@ -7,6 +7,7 @@
 ## 핵심 불변식
 
 - Secure Gateway만 사용자 원문을 수신한다.
+- 파일 원본은 Gateway의 Secure File Ingress만 수신하고 masked document projection만 sandbox로 전달한다.
 - Hermes Agent 전체와 Agent MCP Bridge는 OpenShell sandbox 안에서 실행한다.
 - Agent/LLM에는 masked envelope와 opaque handle만 전달한다.
 - Session-scoped Privacy Core만 handle/ciphertext 상태를 소유한다.
@@ -17,6 +18,7 @@
 - secure mode는 직접 connect/exec/sync/forward와 Agent 입력을 차단한 sealed sandbox만 사용한다.
 - FHE secret은 PC와 스마트폰의 2-of-2 share로만 존재하고 완성된 secret key를 만들지 않는다.
 - Plaintext는 두 장치가 참여한 뒤 승인된 PC 또는 phone Fusion Sink에서만 생성한다.
+- 파일 결과는 승인된 Isolated Document Renderer/local file Fusion Sink가 새 파일로만 생성한다.
 - 실패하거나 불확실하면 전송, 연산 또는 reveal을 중단한다.
 
 ## 전체 컴포넌트 흐름
@@ -35,6 +37,16 @@ Smartphone
 
 draw.io 원본: [`1. architecture-component-flow.drawio`](1.%20architecture-component-flow.drawio)
 
+다이어그램의 번호는 다음 흐름을 뜻한다.
+
+1. Secure Gateway가 사용자의 message text 또는 지원 파일 원본을 직접 수신한다.
+2. Message는 PII/Crypto Ingress로 보내고, 파일은 암호화 보관·격리 parsing·Document IR 변환 후
+   PII/Crypto Ingress에서 검출·마스킹·암호화한다.
+3. Masked message 또는 document projection만 Hermes/LLM에 전달하고 unresolved 응답만 회수한다.
+4. Agent의 handle-only 요청은 MCP Bridge를 거쳐 Privacy Core와 Public FHE Worker에서 처리한다.
+5. 출력 요청은 Gateway 검증과 PC·스마트폰 2-of-2 reveal 승인을 거친다.
+6. 승인된 local sink에서 화면에 표시하거나 Isolated Document Renderer가 새 파일을 생성한다.
+
 상세 결정:
 
 - [`1-1. pre-llm-ingress.md`](1-1.%20pre-llm-ingress.md)
@@ -42,13 +54,15 @@ draw.io 원본: [`1. architecture-component-flow.drawio`](1.%20architecture-comp
 - [`1-3. authority-channel-separation.md`](1-3.%20authority-channel-separation.md)
 - [`1-4. handle-vault-contract.md`](1-4.%20handle-vault-contract.md)
 - [`1-5. post-llm-reveal-egress.md`](1-5.%20post-llm-reveal-egress.md)
+- [`1-9. secure-file-ingress.md`](1-9.%20secure-file-ingress.md)
+- [`1-10. secure-file-egress.md`](1-10.%20secure-file-egress.md)
 
 ## 단계별 데이터 상태
 
 | 단계 | 위치 | 입력 | 출력 | 평문 접근 |
 |---|---|---|---|---|
-| 1 | User → Gateway | UTF-8 원문 | raw message | User, Gateway ingress |
-| 2 | PII/Crypto ingress | 원문 | scheme별 FHE ciphertext 또는 threshold-envelope AEAD record | trusted host ingress |
+| 1 | User → Gateway | UTF-8 message 또는 지원 파일 bytes | raw message 또는 encrypted original object | User, Gateway ingress |
+| 2 | Text/File ingress | message 또는 parser가 만든 Canonical Document IR | masked text/document projection + 보호 record | trusted host ingress/parser |
 | 3 | Session Vault | ciphertext/AEAD secret + metadata | opaque input handle | 평문 없음 |
 | 4 | Gateway → OpenShell Hermes Agent | masked envelope | masked conversation | 평문 없음 |
 | 5 | Agent → LLM | masked prompt | tool plan/response | 평문 없음 |
@@ -57,6 +71,7 @@ draw.io 원본: [`1. architecture-component-flow.drawio`](1.%20architecture-comp
 | 8 | Core → Agent | result handle | unresolved response | 평문 없음 |
 | 9 | Agent → Gateway egress | response + result handle | reveal request candidate | 평문 없음 |
 | 10 | PC + phone partial authorities → Fusion Sink | 승인된 ciphertext | plaintext | 승인된 PC/phone sink만 |
+| 11 | File Renderer/Fusion Sink → User | 검증된 Output Document IR + 승인된 partial | 새 local output file | 승인된 renderer와 User |
 
 ## 정상 sequence
 
@@ -69,8 +84,9 @@ draw.io 원본: [`architecture-normal-sequence.drawio`](architecture-normal-sequ
 정상 흐름:
 
 1. Gateway가 Core session을 시작한다.
-2. 사용자의 raw text를 검출·마스킹한다. 데이터 정책에 따라 scheme별 joint public key로 FHE
-   암호화하거나 record별 AEAD + threshold envelope record를 Vault에 저장한다.
+2. 사용자의 raw text를 검출·마스킹한다. 파일이면 원본을 chunked AEAD object로 저장하고 격리
+   parser가 만든 complete Canonical Document IR을 검출·마스킹한다. 데이터 정책에 따라 scheme별 joint
+   public key로 FHE 암호화하거나 record별 AEAD + threshold envelope record를 Vault에 저장한다.
 3. masked envelope만 OpenShell Hermes Agent에 전달한다.
 4. LLM이 opaque handle을 이용한 공개 연산을 계획한다.
 5. Agent가 stdio MCP Bridge에 handle operation을 요청한다.
@@ -79,6 +95,8 @@ draw.io 원본: [`architecture-normal-sequence.drawio`](architecture-normal-sequ
 8. Gateway egress와 Reveal Coordinator가 승인한 결과에 대해 PC와 스마트폰이 partial decrypt 또는
    unwrap share를 만든다.
 9. 두 partial share는 승인된 PC 또는 phone Fusion Sink에서만 결합한다.
+10. 파일 출력이면 Gateway가 masked result를 Output Document IR로 검증하고, 승인된 Isolated Document
+    Renderer/local file Fusion Sink가 destination-bound plaintext를 결합해 새 파일을 원자적으로 생성한다.
 
 ## Interface 경계
 
@@ -109,7 +127,7 @@ mask, encrypt, decrypt, resolve, key export와 Vault access tool을 등록하지
 | unknown/cross-session/context mismatch handle | 거부 |
 | 입력 secret 직접 reveal | 거부 |
 | Agent/LLM/tool로 plaintext 반환 | 거부 |
-| unsupported attachment/memory/tool plaintext | secure mode에서 거부 |
+| unsupported/unverified file profile, OCR 필요 content, memory/tool plaintext | secure mode에서 거부 |
 | quota/depth/timeout 초과 | 거부 |
 
 ## 보안 주장 범위

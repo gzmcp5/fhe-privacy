@@ -14,6 +14,7 @@
 | 복호화, `decrypt` | 암호문을 원래 정보로 되돌리는 작업 |
 | Reveal | 정책과 승인을 확인한 뒤 최종 사용자에게 원래 값을 보여주는 전체 과정 |
 | Gateway | 사용자 입력을 먼저 검사하고 안전한 내용만 Agent에 전달하는 관문 |
+| Document IR | Document Intermediate Representation. PDF, DOCX, Markdown 등 서로 다른 파일을 문단·표·셀·위치·segment의 공통 구조로 바꾼 표준 문서 중간 표현 |
 | Agent | LLM과 도구를 사용해 작업하는 프로그램. 이 설계에서는 믿지 않는 대상으로 간주 |
 | LLM | 외부 언어 모델. 마스킹된 내용만 받아야 함 |
 | Sandbox | Agent가 파일·프로세스·네트워크 경계를 벗어나지 못하게 가두는 실행 공간 |

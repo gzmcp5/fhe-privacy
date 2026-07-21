@@ -1,86 +1,83 @@
-<mxfile host="app.diagrams.net" modified="2026-07-14T00:00:00.000Z" agent="Codex" version="24.7.17">
-  <diagram id="product-runtime-relationship" name="Product Runtime Relationship">
-    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-
-        <mxCell id="title" value="FHE-Privacy · OpenShell · Hermes 관계" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#102A43;" vertex="1" parent="1">
-          <mxGeometry x="260" y="25" width="880" height="40" as="geometry" />
-        </mxCell>
-        <mxCell id="subtitle" value="FHE-Privacy가 제품과 보안 흐름을 소유하고, OpenShell이 격리하며, Hermes가 비신뢰 Agent로 실행된다" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontColor=#486581;" vertex="1" parent="1">
-          <mxGeometry x="230" y="65" width="940" height="30" as="geometry" />
-        </mxCell>
-
-        <mxCell id="user" value="&lt;b&gt;사용자&lt;/b&gt;&lt;br&gt;User" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#486581;strokeWidth=2;fontSize=16;fontColor=#102A43;" vertex="1" parent="1">
-          <mxGeometry x="35" y="285" width="135" height="80" as="geometry" />
-        </mxCell>
-
-        <mxCell id="fhe_boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6FFFA;strokeColor=#0F766E;strokeWidth=3;dashed=0;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="235" y="125" width="475" height="555" as="geometry" />
-        </mxCell>
-        <mxCell id="fhe_title" value="&lt;b&gt;FHE-Privacy&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 13px;&quot;&gt;최상위 제품 · 설치/실행 진입점 · 신뢰 프라이버시 경계&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=22;fontColor=#115E59;" vertex="1" parent="1">
-          <mxGeometry x="260" y="145" width="425" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="gateway" value="&lt;b&gt;Secure Gateway&lt;/b&gt;&lt;br&gt;raw input의 유일한 진입점&lt;br&gt;pre-LLM masking · local egress" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFBF1;strokeColor=#0F766E;strokeWidth=2;fontSize=14;fontColor=#134E4A;" vertex="1" parent="1">
-          <mxGeometry x="275" y="405" width="400" height="85" as="geometry" />
-        </mxCell>
-        <mxCell id="core" value="&lt;b&gt;Privacy Core&lt;/b&gt;&lt;br&gt;session · handle · Vault&lt;br&gt;ciphertext · policy" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFBF1;strokeColor=#0F766E;strokeWidth=2;fontSize=14;fontColor=#134E4A;" vertex="1" parent="1">
-          <mxGeometry x="275" y="525" width="400" height="75" as="geometry" />
-        </mxCell>
-        <mxCell id="reveal" value="&lt;b&gt;Local Reveal 영역&lt;/b&gt;&lt;br&gt;Coordinator · PC/Phone 2-of-2 Authority · Fusion Sink" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#047857;strokeWidth=2;fontSize=14;fontColor=#064E3B;" vertex="1" parent="1">
-          <mxGeometry x="275" y="615" width="400" height="50" as="geometry" />
-        </mxCell>
-        <mxCell id="fhe_owns" value="소유: 개인정보 정책 · 암호 상태 · key share 경계 · reveal 승인" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDFA;strokeColor=#5EEAD4;strokeWidth=1;fontSize=13;fontColor=#115E59;align=center;" vertex="1" parent="1">
-          <mxGeometry x="275" y="230" width="400" height="75" as="geometry" />
-        </mxCell>
-
-        <mxCell id="openshell_boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=3;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="785" y="125" width="575" height="555" as="geometry" />
-        </mxCell>
-        <mxCell id="openshell_title" value="&lt;b&gt;OpenShell&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 13px;&quot;&gt;FHE-Privacy가 버전·무결성을 고정하는 별도 sandbox runtime dependency&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=22;fontColor=#1E3A8A;" vertex="1" parent="1">
-          <mxGeometry x="810" y="145" width="520" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="openshell_gateway" value="&lt;b&gt;OpenShell Gateway / Runtime&lt;/b&gt;&lt;br&gt;sandbox lifecycle · policy enforcement&lt;br&gt;filesystem · process · network isolation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#2563EB;strokeWidth=2;fontSize=14;fontColor=#1E3A8A;" vertex="1" parent="1">
-          <mxGeometry x="825" y="230" width="495" height="75" as="geometry" />
-        </mxCell>
-
-        <mxCell id="sandbox_boundary" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#EA580C;strokeWidth=3;dashed=1;dashPattern=8 4;arcSize=10;" vertex="1" parent="1">
-          <mxGeometry x="825" y="330" width="495" height="320" as="geometry" />
-        </mxCell>
-        <mxCell id="sandbox_title" value="&lt;b&gt;Sealed OpenShell Sandbox&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;비신뢰 실행 영역 · direct input/connect/exec/sync/forward 차단&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=17;fontColor=#9A3412;" vertex="1" parent="1">
-          <mxGeometry x="850" y="345" width="445" height="45" as="geometry" />
-        </mxCell>
-        <mxCell id="hermes" value="&lt;b&gt;Hermes Agent&lt;/b&gt;&lt;br&gt;비신뢰 Agent 구현체&lt;br&gt;masked prompt와 opaque handle만 사용" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEDD5;strokeColor=#EA580C;strokeWidth=2;fontSize=15;fontColor=#9A3412;" vertex="1" parent="1">
-          <mxGeometry x="855" y="405" width="435" height="85" as="geometry" />
-        </mxCell>
-        <mxCell id="bridge" value="&lt;b&gt;Stateless MCP Bridge&lt;/b&gt;&lt;br&gt;handle-only tool 중계&lt;br&gt;Hermes와 동일한 비신뢰 principal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEDD5;strokeColor=#EA580C;strokeWidth=2;fontSize=14;fontColor=#9A3412;" vertex="1" parent="1">
-          <mxGeometry x="855" y="525" width="435" height="75" as="geometry" />
-        </mxCell>
-
-        <mxCell id="user_to_gateway" value="raw input" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0F766E;strokeWidth=3;endArrow=block;endFill=1;fontSize=13;fontStyle=1;fontColor=#115E59;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="user" target="gateway">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="fhe_to_openshell" value="pin · install · orchestrate" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#2563EB;strokeWidth=3;endArrow=block;endFill=1;fontSize=13;fontStyle=1;fontColor=#1E40AF;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="fhe_owns" target="openshell_gateway">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="gateway_to_hermes" value="masked envelope only" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.32;entryX=0;entryY=0.32;strokeColor=#0F766E;strokeWidth=3;endArrow=block;endFill=1;fontSize=13;fontStyle=1;fontColor=#115E59;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="gateway" target="hermes">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="hermes_to_bridge" value="stdio MCP" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#EA580C;strokeWidth=2;endArrow=block;endFill=1;fontSize=12;fontColor=#9A3412;labelBackgroundColor=#FFF7ED;" edge="1" parent="1" source="hermes" target="bridge">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="bridge_to_core" value="handle-only HTTPS/mTLS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeColor=#7C3AED;strokeWidth=3;endArrow=block;endFill=1;fontSize=13;fontStyle=1;fontColor=#5B21B6;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="bridge" target="core">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="response_to_gateway" value="unresolved response · no plaintext" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.72;entryX=1;entryY=0.72;strokeColor=#64748B;strokeWidth=2;dashed=1;endArrow=block;endFill=1;fontSize=12;fontColor=#475569;labelBackgroundColor=#FFFFFF;" edge="1" parent="1" source="hermes" target="gateway">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-
-        <mxCell id="legend" value="&lt;b&gt;핵심 경계&lt;/b&gt;  ·  FHE-Privacy 밖으로 raw plaintext/key share/Vault/reveal 권한을 보내지 않음  ·  OpenShell은 격리를 제공하지만 privacy policy를 소유하지 않음" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=1;fontSize=13;fontColor=#334155;align=center;" vertex="1" parent="1">
-          <mxGeometry x="235" y="710" width="1125" height="50" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
-</mxfile>
+<mxGraphModel dx="1711" dy="889" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="800" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+    <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=26;fontStyle=1;fontColor=#102A43;" value="FHE-Privacy · OpenShell · Hermes 관계" vertex="1">
+      <mxGeometry height="40" width="880" x="260" y="25" as="geometry" />
+    </mxCell>
+    <mxCell id="subtitle" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontSize=14;fontColor=#486581;" value="FHE-Privacy가 제품과 보안 흐름을 소유하고, OpenShell이 격리하며, Hermes가 비신뢰 Agent로 실행된다" vertex="1">
+      <mxGeometry height="30" width="940" x="230" y="65" as="geometry" />
+    </mxCell>
+    <mxCell id="user" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#486581;strokeWidth=2;fontSize=16;fontColor=#102A43;" value="&lt;b&gt;사용자&lt;/b&gt;&lt;br&gt;User" vertex="1">
+      <mxGeometry height="80" width="135" x="35" y="285" as="geometry" />
+    </mxCell>
+    <mxCell id="fhe_boundary" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E6FFFA;strokeColor=#0F766E;strokeWidth=3;dashed=0;arcSize=10;" value="" vertex="1">
+      <mxGeometry height="555" width="475" x="235" y="125" as="geometry" />
+    </mxCell>
+    <mxCell id="fhe_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=22;fontColor=#115E59;" value="&lt;b&gt;FHE-Privacy&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 13px;&quot;&gt;최상위 제품 · 설치/실행 진입점 · 신뢰 프라이버시 경계&lt;/font&gt;" vertex="1">
+      <mxGeometry height="60" width="425" x="260" y="145" as="geometry" />
+    </mxCell>
+    <mxCell id="gateway" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFBF1;strokeColor=#0F766E;strokeWidth=2;fontSize=14;fontColor=#134E4A;" value="&lt;b&gt;Secure Gateway&lt;/b&gt;&lt;br&gt;raw input의 유일한 진입점&lt;br&gt;pre-LLM masking · local egress" vertex="1">
+      <mxGeometry height="85" width="400" x="275" y="405" as="geometry" />
+    </mxCell>
+    <mxCell id="core" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CCFBF1;strokeColor=#0F766E;strokeWidth=2;fontSize=14;fontColor=#134E4A;" value="&lt;b&gt;Privacy Core&lt;/b&gt;&lt;br&gt;session · handle · Vault&lt;br&gt;ciphertext · policy" vertex="1">
+      <mxGeometry height="75" width="400" x="275" y="525" as="geometry" />
+    </mxCell>
+    <mxCell id="reveal" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D1FAE5;strokeColor=#047857;strokeWidth=2;fontSize=14;fontColor=#064E3B;" value="&lt;b&gt;Local Reveal 영역&lt;/b&gt;&lt;br&gt;Coordinator · PC/Phone 2-of-2 Authority · Fusion Sink" vertex="1">
+      <mxGeometry height="50" width="400" x="275" y="615" as="geometry" />
+    </mxCell>
+    <mxCell id="fhe_owns" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F0FDFA;strokeColor=#5EEAD4;strokeWidth=1;fontSize=13;fontColor=#115E59;align=center;" value="소유: 개인정보 정책 · 암호 상태 · key share 경계 · reveal 승인" vertex="1">
+      <mxGeometry height="75" width="400" x="275" y="230" as="geometry" />
+    </mxCell>
+    <mxCell id="openshell_boundary" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;strokeWidth=3;arcSize=10;" value="" vertex="1">
+      <mxGeometry height="555" width="575" x="785" y="125" as="geometry" />
+    </mxCell>
+    <mxCell id="openshell_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=22;fontColor=#1E3A8A;" value="&lt;b&gt;OpenShell&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 13px;&quot;&gt;FHE-Privacy가 버전·무결성을 고정하는 별도 sandbox runtime dependency&lt;/font&gt;" vertex="1">
+      <mxGeometry height="60" width="520" x="810" y="145" as="geometry" />
+    </mxCell>
+    <mxCell id="openshell_gateway" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DBEAFE;strokeColor=#2563EB;strokeWidth=2;fontSize=14;fontColor=#1E3A8A;" value="&lt;b&gt;OpenShell Gateway / Runtime&lt;/b&gt;&lt;br&gt;sandbox lifecycle · policy enforcement&lt;br&gt;filesystem · process · network isolation" vertex="1">
+      <mxGeometry height="75" width="495" x="825" y="230" as="geometry" />
+    </mxCell>
+    <mxCell id="sandbox_boundary" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF7ED;strokeColor=#EA580C;strokeWidth=3;dashed=1;dashPattern=8 4;arcSize=10;" value="" vertex="1">
+      <mxGeometry height="320" width="495" x="825" y="330" as="geometry" />
+    </mxCell>
+    <mxCell id="sandbox_title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontSize=17;fontColor=#9A3412;" value="&lt;b&gt;Sealed OpenShell Sandbox&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size: 12px;&quot;&gt;비신뢰 실행 영역 · direct input/connect/exec/sync/forward 차단&lt;/font&gt;" vertex="1">
+      <mxGeometry height="45" width="445" x="850" y="345" as="geometry" />
+    </mxCell>
+    <mxCell id="hermes" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEDD5;strokeColor=#EA580C;strokeWidth=2;fontSize=15;fontColor=#9A3412;" value="&lt;b&gt;Hermes Agent&lt;/b&gt;&lt;br&gt;비신뢰 Agent 구현체&lt;br&gt;masked prompt와 opaque handle만 사용" vertex="1">
+      <mxGeometry height="85" width="435" x="855" y="405" as="geometry" />
+    </mxCell>
+    <mxCell id="bridge" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFEDD5;strokeColor=#EA580C;strokeWidth=2;fontSize=14;fontColor=#9A3412;" value="&lt;b&gt;Stateless MCP Bridge&lt;/b&gt;&lt;br&gt;handle-only tool 중계&lt;br&gt;Hermes와 동일한 비신뢰 principal" vertex="1">
+      <mxGeometry height="75" width="435" x="855" y="525" as="geometry" />
+    </mxCell>
+    <mxCell id="user_to_gateway" edge="1" parent="1" source="user" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0F766E;strokeWidth=3;endArrow=block;endFill=1;fontSize=13;fontStyle=1;fontColor=#115E59;labelBackgroundColor=#FFFFFF;" target="gateway" value="raw input">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="fhe_to_openshell" edge="1" parent="1" source="fhe_owns" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#2563EB;strokeWidth=3;endArrow=block;endFill=1;fontSize=13;fontStyle=1;fontColor=#1E40AF;labelBackgroundColor=#FFFFFF;" target="openshell_gateway" value="pin · install · orchestrate">
+      <mxGeometry relative="1" y="18" as="geometry">
+        <mxPoint as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="gateway_to_hermes" edge="1" parent="1" source="gateway" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.32;entryX=0;entryY=0.32;strokeColor=#0F766E;strokeWidth=3;endArrow=block;endFill=1;fontSize=13;fontStyle=1;fontColor=#115E59;labelBackgroundColor=#FFFFFF;" target="hermes" value="masked envelope only">
+      <mxGeometry relative="1" x="-0.0556" y="12" as="geometry">
+        <mxPoint as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="hermes_to_bridge" edge="1" parent="1" source="hermes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;strokeColor=#EA580C;strokeWidth=2;endArrow=block;endFill=1;fontSize=12;fontColor=#9A3412;labelBackgroundColor=#FFF7ED;" target="bridge" value="stdio MCP">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="bridge_to_core" edge="1" parent="1" source="bridge" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;strokeColor=#7C3AED;strokeWidth=3;endArrow=block;endFill=1;fontSize=13;fontStyle=1;fontColor=#5B21B6;labelBackgroundColor=#FFFFFF;" target="core" value="handle-only HTTPS/mTLS">
+      <mxGeometry relative="1" x="0.0556" y="-12" as="geometry">
+        <mxPoint y="-1" as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="response_to_gateway" edge="1" parent="1" source="hermes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.72;entryX=1;entryY=0.72;strokeColor=#64748B;strokeWidth=2;dashed=1;endArrow=block;endFill=1;fontSize=12;fontColor=#475569;labelBackgroundColor=#FFFFFF;" target="gateway" value="unresolved response · no plaintext">
+      <mxGeometry relative="1" x="0.0556" y="14" as="geometry">
+        <mxPoint as="offset" />
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="legend" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#94A3B8;strokeWidth=1;fontSize=13;fontColor=#334155;align=center;" value="&lt;b&gt;핵심 경계&lt;/b&gt;  ·  FHE-Privacy 밖으로 raw plaintext/key share/Vault/reveal 권한을 보내지 않음  ·  OpenShell은 격리를 제공하지만 privacy policy를 소유하지 않음" vertex="1">
+      <mxGeometry height="50" width="1125" x="235" y="710" as="geometry" />
+    </mxCell>
+  </root>
+</mxGraphModel>

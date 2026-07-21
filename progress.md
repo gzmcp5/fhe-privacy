@@ -30,6 +30,28 @@
 - **비범위:** 웹서버, 채팅 UI, 자체 LLM provider loop, DB viewer, web_search.
 - **다음 시작점:** 확정 설계의 구현 가능성 spike와 P0 문서/검증 하네스 재구축.
 
+## 2026-07-20 Secure File Ingress 설계
+
+- Prompt text뿐 아니라 파일 원본도 Secure Gateway가 직접 받는 ingress로 확장했다.
+- 초기 허용 후보는 TXT, Markdown, CSV, TSV, JSON, DOCX와 born-digital PDF이며 OCR, 이미지 분석,
+  legacy/macro Office, 암호화 문서와 archive는 비지원으로 정했다.
+- Format별 격리 parser, Canonical Document IR, extraction coverage fail-closed와 masked document
+  projection 계약을 `docs/1-9. secure-file-ingress.md`에 정의했다.
+- 원본은 workspace 밖 private object store에 file별 chunked AEAD로 저장하고 DEK를 PC·스마트폰
+  2-of-2 threshold envelope로 보호한다. 평문 원본 전체를 임시 파일로 저장하지 않는다.
+- 파일 출력은 Agent/LLM의 masked result를 Gateway가 Output Document IR로 검증하고, PC·스마트폰
+  2-of-2 승인 후 Isolated Document Renderer/local file Fusion Sink가 새 파일로 생성하도록 정했다.
+- 관련 보안 인덱스, ingress/content policy, 전체 흐름, 기능 목록과 개발 계획을 정합화했다.
+- 설계 변경만 수행했으며 file 기능은 모두 `not_started`다. 제품 `./init.sh`는 아직 존재하지 않는다.
+
+## 2026-07-20 구현 전 설계 공백 추적
+
+- `docs/design-open-decisions.md`를 추가해 구현 전 P0 결정 8개와 P1 결정 4개를 순서대로 정리했다.
+- 암호 primitive, 파일 DEK의 스마트폰 참여 시점, 프로세스/IPC, 통합 상태, parser profile, Output IR,
+  PII ambiguity와 Hermes/OpenShell 가능성 검증을 P0로 두었다.
+- WIP 1개 원칙에 따라 다음 시작점은 DOD-001 threshold envelope primitive 하나로 제한했다.
+- 설계 추적만 추가했으며 구현 또는 기능 검증 상태는 변경하지 않았다.
+
 ## 2026-07-14 macOS arm64 native runtime 생성
 
 - macOS arm64에서 `./tools/bootstrap-dev-runtime.sh`를 실행해 OpenShell v0.0.80 공식

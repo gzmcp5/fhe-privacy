@@ -86,41 +86,49 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 8. CKKS는 허용 오차가 명시된 수치 데이터에만 사용한다. BFV/BGV는 exact integer, Boolean FHE는
    exact predicate에 사용한다. 주민등록번호처럼 계산하지 않는 exact identifier는 record별 AEAD와
    2-of-2 threshold envelope로 보호한다.
-9. 초기 범위는 trusted text ingress만 지원한다. attachment, OCR, audio, clipboard 자동수집,
-   memory import, tool output의 plaintext 유입은 명시적으로 차단한다.
-10. OpenShell은 프로세스·filesystem·network 격리 계층이며 위 데이터 흐름 통제를 대체하지 않는다.
-11. Agent-safe Core는 sandbox 전체가 호출할 수 있는 HTTPS/mTLS endpoint로 제공한다. Host-only Core,
+9. Message ingress는 trusted UTF-8 text를 지원한다. File ingress는 TXT/Markdown/CSV/TSV/JSON을
+   Phase 1, DOCX와 born-digital PDF를 Phase 2 허용 후보로 두며, format별 coverage 검증이 완료된
+   projection만 Agent에 전달한다. OCR, 이미지 분석, 허용 목록 밖의 attachment, clipboard 자동수집,
+   memory import와 tool output의 plaintext 유입은 명시적으로 차단한다.
+10. 파일 원본은 workspace 밖 private object store에 chunked AEAD로 저장하고 file DEK를 2-of-2
+    threshold envelope로 보호한다. 평문 원본 전체를 임시 파일로 저장하지 않는다.
+11. 파일 출력은 Agent의 masked result를 Gateway가 Output Document IR로 검증한 뒤 PC·스마트폰
+    2-of-2 승인을 거쳐 Isolated Document Renderer/local file Fusion Sink가 새 파일로 생성한다.
+    Agent/LLM은 평문 결과 파일을 직접 생성하거나 저장하지 않는다.
+12. OpenShell은 프로세스·filesystem·network 격리 계층이며 위 데이터 흐름 통제를 대체하지 않는다.
+13. Agent-safe Core는 sandbox 전체가 호출할 수 있는 HTTPS/mTLS endpoint로 제공한다. Host-only Core,
     Reveal Coordinator와 PC partial authority는 서로 다른 local UDS에만 bind하며 기존 OpenShell
     relay는 재사용하지 않는다. Phone authority는 장치 인증된 별도 채널만 사용한다.
-12. Secure mode는 connect/SSH, exec, sync, forward와 직접 Agent 입력을 차단한 sealed sandbox만
+14. Secure mode는 connect/SSH, exec, sync, forward와 직접 Agent 입력을 차단한 sealed sandbox만
     사용한다. Core capability는 sandbox/session/policy revision과 짧은 lease에 바인딩한다.
-13. Exact secret은 record별 임의 DEK로 AEAD 암호화하고 DEK를 PC·스마트폰 2-of-2 envelope로 감싼다.
+15. Exact secret은 record별 임의 DEK로 AEAD 암호화하고 DEK를 PC·스마트폰 2-of-2 envelope로 감싼다.
     장기 AEAD master key는 두지 않는다. Public Compute Worker는 초기 버전에서 결과 무결성 측면의
     신뢰된 로컬 프로세스다.
-14. 이름은 이 제품의 PII 탐지·masking 대상에서 제외한다. 상세 탐지 종류와 예외는
+16. 이름은 이 제품의 PII 탐지·masking 대상에서 제외한다. 상세 탐지 종류와 예외는
     `docs/pii-detection-catalog.md`를 기준으로 한다.
-15. 초기 Vault는 메모리 기반이다. 영속화 단계에서는 SQLite metadata와 binary BLOB을 기본안으로
+17. 초기 Vault는 메모리 기반이다. 영속화 단계에서는 SQLite metadata와 binary BLOB을 기본안으로
     검증하며 JSON을 Vault 본체로 사용하지 않는다.
-16. FHE-Privacy가 최상위 제품과 사용자 진입점이다. 제품 관계는
+18. FHE-Privacy가 최상위 제품과 사용자 진입점이다. 제품 관계는
     `사용자 -> FHE-Privacy -> OpenShell -> Hermes`다.
-17. Secure Gateway는 OpenShell을 제품/워크플로 수준에서 감싸고 오케스트레이션하지만 OpenShell
+19. Secure Gateway는 OpenShell을 제품/워크플로 수준에서 감싸고 오케스트레이션하지만 OpenShell
     Gateway와 같은 프로세스나 권한 영역으로 합치지 않는다.
-18. 로컬 배포에서 FHE-Privacy installer는 검증된 고정 버전의 OpenShell host package/binary를
+20. 로컬 배포에서 FHE-Privacy installer는 검증된 고정 버전의 OpenShell host package/binary를
     설치한다. Kubernetes에서는 별도 OpenShell Gateway/Supervisor image와 Helm chart를 배포한다.
-19. Hermes는 OpenShell이 실행하는 OCI workload image다. Secure Gateway, Privacy Core, OpenShell
+21. Hermes는 OpenShell이 실행하는 OCI workload image다. Secure Gateway, Privacy Core, OpenShell
     Gateway와 Hermes sandbox를 하나의 container image에 합치지 않는다.
-20. FHE-Privacy secure session의 사용자 진입점은 `fhe-privacy` CLI다. OpenShell CLI 전체를
+22. FHE-Privacy secure session의 사용자 진입점은 `fhe-privacy` CLI다. OpenShell CLI 전체를
     복제하지 않지만 sealed sandbox에 대한 direct connect/exec/sync/forward는 차단한다.
-21. OpenShell 수정이 필요하면 sealed management access, workload identity, policy revision/lease
+23. OpenShell 수정이 필요하면 sealed management access, workload identity, policy revision/lease
     binding 같은 범용 기능만 OpenShell fork/upstream에 구현한다. PII, Vault, FHE와 reveal 코드는
     FHE-Privacy에 둔다.
-22. 수정된 OpenShell이 upstream release에 없다면 FHE-Privacy release CI가 고정 commit에서 미리
+24. 수정된 OpenShell이 upstream release에 없다면 FHE-Privacy release CI가 고정 commit에서 미리
     빌드하고 checksum/digest를 기록한다. 최종 사용자는 OpenShell 소스를 빌드하지 않는다.
 
 ## 기준 문서
 
 - 보안 결정 색인: `docs/1-0. security-architecture-index.md`
-- 세부 결정: `docs/1-1. pre-llm-ingress.md`부터 `docs/1-8. operational-security-baseline.md`
+- 구현 전 미결정 사항: `docs/design-open-decisions.md`
+- 세부 결정: `docs/1-1. pre-llm-ingress.md`부터 `docs/1-10. secure-file-egress.md`
 - 컴포넌트 흐름: `docs/1. architecture-component-flow.drawio`
 - 전체 흐름: `docs/architecture-flow.md`
 - 기능 목록: `docs/fhe-features.md`
@@ -134,21 +142,23 @@ RAG 없이 `docs/1. architecture-component-flow.drawio`를 기준으로 FHE-Priv
 
 1. 새 세션 시작 시 `AGENTS.md`, 이 파일, `feature_list.json`, `progress.md`,
    `docs/1-0. security-architecture-index.md`, `docs/architecture-flow.md`를 순서대로 읽는다.
-2. `git status --short --branch`로 사용자 편집 상태인 `docs/0. product-runtime-relationship.drawio`와
+2. 기능 구현 전에 `docs/design-open-decisions.md`의 DOD-001만 `investigating`으로 전환하고 2-of-2
+   threshold envelope primitive와 protocol을 확정한다.
+3. `git status --short --branch`로 사용자 편집 상태인 `docs/0. product-runtime-relationship.drawio`와
    `docs/1. architecture-component-flow.drawio` 변경을 확인한다. 두 파일은 이번 종료 커밋에 포함하지 않았다.
-3. 제품 관계 문서와 두 draw.io에서 다음 책임 분리가 일치하는지 시각 검토한다.
+4. 제품 관계 문서와 두 draw.io에서 다음 책임 분리가 일치하는지 시각 검토한다.
    - MCP Bridge: stdio MCP protocol 처리와 agent-safe Core 중계만 담당
    - Privacy Core: session/handle/policy 검증, 상태 관리와 작업 dispatch 담당
    - Crypto ingress: 입력 암호화
    - Public Compute Worker: secret-free 동형연산
    - PC/Phone Partial Authority + Fusion Sink: partial decrypt와 최종 plaintext 생성
-4. `docs/fhe-development-plan.md`의 P0부터 새 Python package/test/CLI skeleton과 `init.sh` 검증
-   entrypoint를 복구한다. 첫 active feature는 하나만 선택한다.
-5. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
-6. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
+5. 설계 P0 결정이 모두 닫힌 뒤 `docs/fhe-development-plan.md`의 P0부터 새 Python package/test/CLI
+   skeleton과 `init.sh` 검증 entrypoint를 복구한다. 첫 active feature는 하나만 선택한다.
+6. 개발 도구가 필요하면 `mise install zig@0.14.1`로 중단된 설치만 재개하고 `mise doctor`를 실행한다.
+7. 실제 구현 전 agent-safe HTTPS/mTLS, sealed full-process containment와 deny-by-default network
    policy를 작은 spike로 검증한다.
-7. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
-8. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
+8. Host-only/reveal UDS의 OS identity, permission과 capability lease 전달 방식을 검증한다.
+9. 각 단계는 허용 경로 테스트뿐 아니라 우회·재생·교차 세션·권한 상승 거부 테스트를 포함한다.
 
 ## 남는 위험과 보안 주장 한계
 

@@ -34,6 +34,20 @@
 | PII-05 | 비지원 content 거부 | not_started | attachment/memory/tool plaintext 거부 테스트 |
 | PII-06 | 풍부한 PII catalog | not_started | kind별 형식/checksum/context와 이름 제외 테스트 |
 
+## 2-1. 파일 ingress
+
+| ID | 기능 | 상태 | 완료 조건 |
+|---|---|---|---|
+| FIL-01 | File Phase 1 format | not_started | TXT/Markdown/CSV/TSV/JSON positive·malformed·quota tests |
+| FIL-02 | Canonical Document IR | not_started | block/cell/location/coverage와 masked projection 무결성 테스트 |
+| FIL-03 | Encrypted original object store | not_started | chunk AEAD/manifest/2-of-2 DEK envelope/atomic commit/cleanup 테스트 |
+| FIL-04 | Isolated parser boundary | not_started | network/workspace/other-object/key 접근과 crash/timeout 거부 테스트 |
+| FIL-05 | DOCX profile | not_started | 모든 text-bearing part coverage와 macro/OLE/external 관계 거부 |
+| FIL-06 | Born-digital PDF profile | not_started | page coverage와 encrypted/active/embedded/OCR-required 거부 |
+| FIL-07 | Direct-file bypass 차단 | not_started | workspace/MCP/provider attachment 경로에서 Agent 원문 접근 거부 |
+| FIL-08 | Output Document IR | not_started | schema/policy/provenance/marker/destination binding 검증 |
+| FIL-09 | Isolated Document Renderer | not_started | 2-of-2 file Fusion Sink, format 재파싱, path/injection/partial-write 거부 |
+
 ## 3. Vault와 handle
 
 | ID | 기능 | 상태 | 완료 조건 |
@@ -93,7 +107,7 @@
 
 - RAG/vector DB/embedding
 - 웹앱, 채팅 UI, 자체 LLM loop
-- attachment, OCR, 음성
+- 허용 목록 밖의 attachment, OCR, 이미지 분석, 음성
 - 다중 사용자 SaaS
 - 네트워크 공개 MCP endpoint
 - OS/kernel 완전 침해 방어

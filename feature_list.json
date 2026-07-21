@@ -33,6 +33,14 @@
       "evidence": "설계 문서만 존재하며 구현과 검증 없음"
     },
     {
+      "id": "FIL-01",
+      "group": "파일 ingress와 저장",
+      "behavior": "지원 파일을 격리 parser에서 Canonical Document IR로 정규화하고 원본은 chunked AEAD object로 저장하며, 출력은 검증된 Output Document IR과 2-of-2 local Renderer/Fusion Sink에서만 생성한다",
+      "verification": "format별 coverage/PII canary + active/OCR-required/parser escape + atomic commit/session cleanup + output IR/renderer tests",
+      "state": "not_started",
+      "evidence": "설계 문서만 존재하며 구현과 검증 없음"
+    },
+    {
       "id": "VLT-01",
       "group": "Vault와 handle",
       "behavior": "초기 in-memory Vault에서 typed opaque handle이 session, context, provenance, TTL과 operation policy에 결합된다",

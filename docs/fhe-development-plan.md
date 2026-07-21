@@ -22,14 +22,16 @@
 | P1 | Domain 계약 | error, session, handle, envelope type | serialization/negative tests |
 | P2 | Session Core/Vault | session registry, opaque handle, in-memory Vault | cross-session/replay/cleanup tests |
 | P3 | PII ingress | text normalization, detector, fail-closed masking | canary/ambiguity/unsupported input tests |
-| P4 | 암호 저장 분리 | CKKS, BFV/BGV, Boolean FHE 계약 + exact threshold envelope | precision/exact/overflow/tamper tests |
-| P5 | 2-of-2 key plane | PC/phone joint keygen, partial decrypt/unwrap, fusion | one-share denial/key-set/replay tests |
-| P6 | Public FHE Worker | scheme별 joint public bundle과 operation; v1 integrity-trusted | secret-free process/operation budget tests |
-| P7 | MCP stdio Bridge | 비신뢰 stateless handle-only adapter | round-trip/tool absence/capability-copy tests |
-| P8 | Authority channels | Core/coordinator/PC partial UDS + phone channel + agent-safe HTTPS | privilege escalation/endpoint tests |
-| P9 | Gateway ingress/egress | masked envelope + PC/phone Fusion Sink | raw-input/output bypass tests |
-| P10 | OpenShell adapter | full-process sealed sandbox와 Core lease | management bypass/network/canary E2E tests |
-| P11 | Recovery/operations | 2-of-3 recovery, rotation, clean install, checksums | device-loss/migration/security checklist |
+| P4 | File Phase 1 ingress/storage | TXT/MD/CSV/TSV/JSON IR + encrypted original object store | format/PII canary/chunk AEAD/parser isolation/cleanup tests |
+| P5 | 암호 저장 분리 | CKKS, BFV/BGV, Boolean FHE 계약 + exact threshold envelope | precision/exact/overflow/tamper tests |
+| P6 | 2-of-2 key plane | PC/phone joint keygen, partial decrypt/unwrap, fusion | one-share denial/key-set/replay tests |
+| P7 | Public FHE Worker | scheme별 joint public bundle과 operation; v1 integrity-trusted | secret-free process/operation budget tests |
+| P8 | File Phase 2 formats | DOCX와 born-digital PDF parser/coverage profile | hidden/active/embedded/OCR-required/parser escape tests |
+| P9 | MCP stdio Bridge | 비신뢰 stateless handle-only adapter | round-trip/tool absence/capability-copy tests |
+| P10 | Authority channels | Core/coordinator/PC partial UDS + phone channel + agent-safe HTTPS | privilege escalation/endpoint tests |
+| P11 | Gateway ingress/egress | masked envelope/projection + Output Document IR + PC/phone display/file Fusion Sink | raw-input/file/output bypass와 renderer tests |
+| P12 | OpenShell adapter | full-process sealed sandbox와 Core lease | management bypass/network/canary E2E tests |
+| P13 | Recovery/operations | 2-of-3 recovery, rotation, clean install, checksums | device-loss/migration/security checklist |
 
 ## P0 완료 전 금지
 
@@ -57,6 +59,22 @@ cross-session, replay, transaction과 failure semantics를 빠르게 확정할 �
 주민등록번호는 trusted ingress에서 형식/checksum을 검증한 뒤 exact envelope에 저장한다. 생년월일처럼
 필요한 파생 속성은 원본과 분리한다. 명시적 operation contract 없이 identifier를 FHE 산술 입력으로
 자동 변환하지 않는다.
+
+### 파일 ingress는 별도 security pipeline
+
+File Phase 1은 TXT, Markdown, CSV, TSV와 JSON을 Canonical Document IR로 정규화한다. 원본 bytes는
+workspace 밖 private object store에 chunked AEAD로 저장하고 file DEK를 2-of-2 threshold envelope로
+보호한다. Parser에는 한 object의 decrypting stream과 IR 출력 channel만 제공한다.
+
+File Phase 2에서 DOCX와 born-digital PDF를 추가한다. Format별 모든 text-bearing part와 page coverage가
+complete일 때만 masked projection을 발급하며 macro, embedded/external content, 암호화 문서, OCR 필요
+page와 parser warning은 문서 전체 거부로 처리한다. 세부 계약은
+[`1-9. secure-file-ingress.md`](1-9.%20secure-file-ingress.md)를 따른다.
+
+파일 출력은 Agent의 masked result를 Gateway가 Output Document IR로 다시 검증·정규화한 뒤 처리한다.
+Isolated Document Renderer는 destination-bound 2-of-2 partial 결과를 결합할 수 있는 승인된 local file
+Fusion Sink이며 새 파일만 생성한다. Agent가 직접 파일이나 경로를 생성·선택하지 않는다. 상세 계약은
+[`1-10. secure-file-egress.md`](1-10.%20secure-file-egress.md)를 따른다.
 
 ### 2-of-2를 먼저 검증
 
@@ -95,6 +113,11 @@ revision을 Core에서 검증한다.
 - partial share의 ciphertext hash, session, destination, nonce, expiry와 policy binding
 - scheme별 precision, modulus/overflow, predicate와 mobile multiparty compatibility
 - 이름이 단독 또는 다른 PII 옆에서 masking되지 않음
+- 지원 format의 모든 text-bearing part에서 PII canary가 masked projection으로만 전달됨
+- malformed/encrypted/active/embedded/OCR-required 파일에서 Agent 호출 0회
+- 원본의 atomic encrypted commit, parser 격리와 session 종료 cryptographic erasure
+- Output Document IR 검증, 2-of-2 renderer/fusion과 생성 파일 재파싱
+- unsafe path, overwrite, external resource, active content와 partial output cleanup
 
 ## 단계별 문서 갱신
 
